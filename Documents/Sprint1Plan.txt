@@ -14,9 +14,37 @@ Sprint 1:
 - As a user, I want a basic data structure on the server that will be able to hold user data, 
 	even though I won't be able to necessarily access it directly. (13)
 - As a user, I want to be able create an account that is SIM-specific/password/fingerprint protected. (8)
-- As a user, I want to see a search tool for me to enter keywords on the "Browsing" page. (3)
+- As a user, I want to see a search tool for me to enter keywords on the "Browsing" page. (5)
 - As a user, I want to see a form where I can fill in a descriptive title and details -- including 
 	location -- to create my post. (5)
 - As a user, I want to be able to attach pictures to my post. (5)
 - As a user, I want to go to the create-a-post form when I select a button on the "My Posts" page. (5)
+
+TEAM ROLES:
+Kevin Wang (Project Owner)
+Sean Bell (Sprint 1 SCRUM Master)
+Nadene Abuamara
+Yinan Mao
+Dylan Guyenne
+
+INITIAL TASK ASSIGNMENT:
+KW - As a user, I want to be able to access the product from my android device via a download. (1) 
+   - As a user, I want to go to the create-a-post form when I select a button on the "My Posts" page. (5)
+SB - As a user, I want a basic data structure on the server that will be able to hold user data, 
+	even though I won't be able to necessarily access it directly.
+NA - As a user, I want to see a search tool for me to enter keywords on the "Browsing" page. (5)
+YM - As a user, I want to be able create an account that is SIM-specific/password/fingerprint protected. (8)
+DG - As a user, I want to see a form where I can fill in a descriptive title and details -- including 
+	location -- to create my post. (5)
+
+INITIAL BURNUP CHART
+
+INITIAL SCRUM BOARD
+
+SCRUM TIMES (3 days/times per week)
+Mon 5:30PM (w/TA)
+Wed 5:30PM
+Fri 5:30PM
+
+
 
