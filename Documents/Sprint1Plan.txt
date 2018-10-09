@@ -2,7 +2,7 @@
 
 Product Name: YardSale
 Team Name: <insert later>
-Sprint Completion Date: Wednesday, December 5th
+Sprint Completion Date: Wednesday, October 21st
 Revision Number: 1
 
 HIGH LEVEL GOALS:
