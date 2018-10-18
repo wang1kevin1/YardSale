@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "348585518207",
+    "firebase_url": "https://yardsale-115.firebaseio.com",
+    "project_id": "yardsale-115",
+    "storage_bucket": "yardsale-115.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348585518207:android:64d061929b627431",
+        "android_client_info": {
+          "package_name": "YardSale.db"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348585518207-cefkb3l8o55dd0ug0p66l7s7pp4qfn92.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "YardSale.db",
+            "certificate_hash": "570b2357e742292b1caf44c4e2f96a2085bd0e7c"
+          }
+        },
+        {
+          "client_id": "348585518207-7716t2mclet8snj61mhdre147geq03oe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChcx9QjilpunHGWQ8JlyWDVn66MwY2jQU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348585518207-7716t2mclet8snj61mhdre147geq03oe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348585518207:android:66d42228deddf9eb",
+        "android_client_info": {
+          "package_name": "yardsale.cs115"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348585518207-7716t2mclet8snj61mhdre147geq03oe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChcx9QjilpunHGWQ8JlyWDVn66MwY2jQU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
