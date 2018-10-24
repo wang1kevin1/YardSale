@@ -21,7 +21,7 @@ Sprint 1:
 won't be able to necessarily access it directly. (Completed)
 - As a user, I want to see a search tool for me to enter keywords on the "Browsing" page. (Completed)
 - As a user, I want to see a form where I can fill in a descriptive title and details -- including location -- to
-create my post. (Not Completed; In Progress)
+create my post. (Not Completed)
 - As a user, I want to be able to attach pictures to my post. (Not Completed)
 - As a user, I want to go to the create-a-post form when I select a button on the "My Posts" page. (Completed)
 
