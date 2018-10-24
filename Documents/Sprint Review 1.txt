@@ -1,0 +1,27 @@
+SPRINT 1 REVIEW
+
+Team Name: YardSale Team
+Product Name: YardSale
+Date: 10/21/2018
+
+Actions to Stop Doing:
+- The team should stop talking out of turn during Scrum meetings as it makes the meetings longer and less effective.
+- The team should stop gettings sick as it makes meetings less effective as not everybody's there.
+
+Actions to Start Doing:
+- The team should push work more often into github as hoarding code makes integration less viable between units.
+
+Actions to Keep Doing:
+- The team should keep up the great communication as it helps keep everyone up-to-date on current matters and tasks.
+
+Work Completed/Not Completed:
+Sprint 1:
+- As a user, I want to be able to access the product from my android device via a download. (Completed)
+- As a user, I want a basic data structure on the server that will be able to hold user data, even though I
+won't be able to necessarily access it directly. (Completed)
+- As a user, I want to see a search tool for me to enter keywords on the "Browsing" page. (Completed)
+- As a user, I want to see a form where I can fill in a descriptive title and details -- including location -- to
+create my post. (Not Completed; In Progress)
+- As a user, I want to be able to attach pictures to my post. (Not Completed)
+- As a user, I want to go to the create-a-post form when I select a button on the "My Posts" page. (Completed)
+
