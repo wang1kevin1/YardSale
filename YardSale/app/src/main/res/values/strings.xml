@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">YardSale</string>
+    <string name="posttitle">Title</string>
+    <string name="postprice">$0</string>
+    <string name="postzipcode">Zipcode</string>
+    <string name="postdescription">Description&#8230;</string>
+    <string name="postcreate">CREATE</string>
 </resources>
