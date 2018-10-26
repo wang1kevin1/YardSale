@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".CreatePostActivity"
+    android:id="@+id/CreateAPost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    android:gravity="center">
+    <EditText
+        android:id="@+id/PostTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/posttitle"
+        android:importantForAutofill="no"
+        android:inputType="textCapCharacters"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/PostPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/postprice"
+            android:importantForAutofill="no"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/PostZipcode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/postzipcode"
+            android:importantForAutofill="no"
+            android:inputType="number" />
+    </LinearLayout>
+    <EditText
+        android:id="@+id/PostDescription"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="top"
+        android:hint="@string/postdescription"
+        android:importantForAutofill="no"
+        android:inputType="textAutoCorrect"/>
+    <Button
+        android:id="@+id/CreateButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/postcreate"
+        android:clickable="true"
+        android:onClick="onClickCreatePost" />
+</LinearLayout>
