@@ -1,9 +1,9 @@
 package com.YardSale;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 public class CreatePostActivity extends AppCompatActivity {
@@ -34,5 +34,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
         // send data values to Firebase
 
+        // When processes done, return to My Posts Activity
+        Intent myIntent = new Intent(CreatePostActivity.this,
+                MyPostsActivity.class);
+        startActivity(myIntent);
     }
 }
