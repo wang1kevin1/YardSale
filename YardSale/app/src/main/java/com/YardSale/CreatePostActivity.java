@@ -8,23 +8,23 @@ import android.widget.EditText;
 
 public class CreatePostActivity extends AppCompatActivity {
 
-    // Global variables
+    // Text variables for input
     EditText PostTitle, PostPrice, PostZipcode, PostDescription;
-    Button CreateButton;
 
     @Override
     public void onCreate(Bundle saved) {
         super.onCreate(saved);
         setContentView(R.layout.activity_create_post);
 
-        // Initialize activity layout
+        // Locate text input in layout
         PostTitle = findViewById(R.id.PostTitle);
         PostPrice = findViewById(R.id.PostPrice);
         PostZipcode = findViewById(R.id.PostZipcode);
         PostDescription = findViewById(R.id.PostDescription);
-        CreateButton = findViewById(R.id.CreateButton);
     }
 
+    // On button click, grabs form input and stores in database.
+    // Then returns to MyPostsActivity
     public void onClickCreatePost(View v) {
         // Get data entry
         String title = PostTitle.getText().toString();

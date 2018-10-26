@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainMenuActivity"
+    android:id="@+id/CreateAPost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="3"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    android:gravity="center" >
+    <Button
+        android:id="@+id/MenuBrowseButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/browse_posts"
+        android:textSize="40sp"
+        android:clickable="true"
+        android:onClick="goToBrowse" />
+    <Button
+        android:id="@+id/MenuPostButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/my_posts"
+        android:textSize="40sp"
+        android:clickable="true"
+        android:onClick="goToPosts" />
+    <Button
+        android:id="@+id/MenuAccountButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/account_settings"
+        android:textSize="40sp"
+        android:clickable="true"
+        android:onClick="goToAccount" />
+
+</LinearLayout>

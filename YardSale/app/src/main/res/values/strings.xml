@@ -1,5 +1,14 @@
 <resources>
+    <!-- Application Default-->
     <string name="app_name">YardSale</string>
+
+    <!-- Main Menu Activity -->
+    <string name="browse_posts">BROWSE LISTINGS</string>
+    <string name="my_posts">MY POSTS</string>
+    <string name="account_settings">ACCOUNT SETTINGS</string>
+
+    <!-- Create Post String Resources-->
+    <string name="create_post">Create A Post</string>
     <string name="posttitle">Title</string>
     <string name="postprice">$0</string>
     <string name="postzipcode">Zipcode</string>

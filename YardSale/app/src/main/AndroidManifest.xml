@@ -5,17 +5,17 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <!--Dummy Main Activity-->
+        <!--Main Menu Activity-->
         <activity
-            android:name=".DummyMainActivity"
+            android:name=".MainMenuActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,6 +31,7 @@
         <!-- Create Post Activity-->
         <activity
             android:name=".CreatePostActivity"
+            android:label="@string/create_post"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
