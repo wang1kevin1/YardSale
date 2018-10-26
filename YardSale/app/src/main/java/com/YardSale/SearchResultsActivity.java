@@ -1,4 +1,10 @@
-public class SearchResultsActivity extends Activity {
+package com.YardSale;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class SearchResultsActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

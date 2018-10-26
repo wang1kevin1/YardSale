@@ -12,8 +12,8 @@ public class CreatePostActivity extends AppCompatActivity {
     EditText PostTitle, PostPrice, PostZipcode, PostDescription;
 
     @Override
-    public void onCreate(Bundle saved) {
-        super.onCreate(saved);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
 
         // Locate text input in layout
