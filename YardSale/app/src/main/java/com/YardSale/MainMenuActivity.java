@@ -22,7 +22,7 @@ public class MainMenuActivity extends AppCompatActivity {
     // On button click goes to MyPostsActivity
     public void goToPosts(View v) {
         Intent myIntent = new Intent(MainMenuActivity.this,
-                CreatePostActivity.class);
+                MyPostsActivity.class);
         startActivity(myIntent);
     }
 

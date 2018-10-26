@@ -33,5 +33,6 @@ public class CreatePostActivity extends AppCompatActivity {
         String description = PostDescription.getText().toString();
 
         // send data values to Firebase
+
     }
 }
