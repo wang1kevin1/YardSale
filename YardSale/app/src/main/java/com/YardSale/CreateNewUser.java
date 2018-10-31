@@ -19,7 +19,7 @@ public class CreateNewUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_new_user)
+        //setContentView(R.layout.activity_create_new_user)
 
     }
 
