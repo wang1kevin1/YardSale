@@ -1,0 +1,25 @@
+SPRINT 2 REVIEW
+
+Team Name: YardSale Team
+Product Name: YardSale
+Date: 10/21/2018
+
+Actions to Stop Doing:
+- The team should stop talking out of turn during Scrum meetings as it makes the meetings longer and less effective.
+- The team should make sure everyone can come the meeting on the schedule meeting time.
+
+Actions to Start Doing:
+- The team should push work more often into github as hoarding code makes integration less viable between units.
+- The team should have reply ASAP on the slack in order to check the progress of the meeting.
+
+Actions to Keep Doing:
+- The team should keep up the great communication as it helps keep everyone up-to-date on current matters and tasks.
+
+Work Completed/Not Completed:
+Sprint 1:
+- As a user I want to be able to create an account to access the app's services.
+- As a user I want to be able to log in to an existing account to access my previous activity.
+- As a user I want to be able to create a post so that other users can buy my product
+- As a user, I want to see a search tool for me to enter keywords on the "Browsing" page.
+- As a user, I want to be able to show interest in items so that I can purchase from the seller.
+- As a user, I want to be able to download the app onto my android device so I can use it
