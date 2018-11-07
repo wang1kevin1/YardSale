@@ -12,7 +12,7 @@
 
         <!-- Main Menu Activity -->
         <activity
-            android:name=".MainMenuActivity"
+            android:name=".MainSearchActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
@@ -32,7 +32,7 @@
         <activity
             android:name=".SearchResultsActivity"
             android:label="@string/search_title"
-            android:parentActivityName=".MainMenuActivity"
+            android:parentActivityName=".MainSearchActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
@@ -48,7 +48,7 @@
         <activity
             android:name=".MyPostsActivity"
             android:label="@string/my_posts_title"
-            android:parentActivityName=".MainMenuActivity"
+            android:parentActivityName=".MainSearchActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
