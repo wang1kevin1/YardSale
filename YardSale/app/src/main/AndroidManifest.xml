@@ -47,14 +47,6 @@
         </activity>
 
         <!-- My Posts Activity -->
-        <activity
-            android:name=".MyPostsActivity"
-            android:label="@string/my_posts_title"
-            android:parentActivityName=".MainSearchActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
 
         <!-- Create Post Activity -->
         <activity

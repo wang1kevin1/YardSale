@@ -18,6 +18,12 @@
     <!-- My Posts String Resources -->
     <string name="my_posts_title">My Posts</string>
 
+    <!-- Login Activity -->
+    <string name="login">Sign In</string>
+    <string name="prompt_email">Enter Email</string>
+    <string name="prompt_password">Enter Password</string>
+    <string name="create_account">Create Account</string>
+
     <!-- Search String Resources -->
     <string name="search_title">Listings</string>
     <string name="search_hint">Search</string>
