@@ -20,9 +20,11 @@
 
     <!-- Login Activity -->
     <string name="login">Sign In</string>
-    <string name="prompt_email">Enter Email</string>
-    <string name="prompt_password">Enter Password</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
     <string name="create_account">Create Account</string>
+    <string name="hint_email">Enter Email</string>
+    <string name="hint_password">Enter Password</string>
 
     <!-- Search String Resources -->
     <string name="search_title">Listings</string>
