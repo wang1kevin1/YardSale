@@ -40,6 +40,7 @@ public class CreatePostActivity extends BaseActivity{
     Button mPostBtn;
     // Initialize gallery items
     Uri filepath;
+    Uri downloadUrl;
     //Initialize EditText input items
     EditText mPostTitle, mPostPrice, mPostZipcode, mPostDesc;
     // Initialize Firebase References
@@ -82,7 +83,6 @@ public class CreatePostActivity extends BaseActivity{
             @Override
             public void onClick(View view) {
                 NewPost();
-                UploadImage();
             }
         });
     }
@@ -94,7 +94,6 @@ public class CreatePostActivity extends BaseActivity{
         final String description = mPostDesc.getText().toString();
 
         final String userId = getUid();
-
 
 
         // Title is required
@@ -121,60 +120,65 @@ public class CreatePostActivity extends BaseActivity{
         // Disable button so there are no multi-posts
         setEditingEnabled(false);
         Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
-
-        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user value
-                        User user = dataSnapshot.getValue(User.class);
-
-                        // [START_EXCLUDE]
-                        if (user == null) {
-                            // User is null, error out
-                            Log.e(TAG, "User " + userId + " is unexpectedly null");
-                            Toast.makeText(CreatePostActivity.this,
-                                    "Error: could not fetch user.",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Create new post
-                            createNewPost(userId, title, description,
-                                    Integer.parseInt(price), Integer.parseInt(zipcode));
-                            Toast.makeText(getApplicationContext(), "Successfully Posted!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // Finish this Activity, back to the stream
-                        setEditingEnabled(true);
-                        finish();
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        setEditingEnabled(true);
-                    }
-                });
-    }
-
-    private void UploadImage() {
         if(filepath != null)
         {
-            StorageReference imageRef = mStorage.child("images/" + filepath.getLastPathSegment());
-            imageRef.putFile(filepath)
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(CreatePostActivity.this, "Failed " +
-                                    e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
-                        }
-                    });
+            final StorageReference imageRef = mStorage.child("images/" + filepath.getLastPathSegment());
+            imageRef.putFile(filepath).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                }
+            });
+
+            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    downloadUrl = uri;
+                    mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    // Get user value
+                                    User user = dataSnapshot.getValue(User.class);
+
+                                    if (user == null) {
+                                        // User is null, error out
+                                        Log.e(TAG, "User " + userId + " is unexpectedly null");
+                                        Toast.makeText(CreatePostActivity.this,
+                                                "Error: could not fetch user.",
+                                                Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // Create new post
+                                        createNewPost(userId, title, description,
+                                                Integer.parseInt(price), Integer.parseInt(zipcode),
+                                                downloadUrl.toString());
+                                        Toast.makeText(getApplicationContext(), "Successfully Posted!",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    // Finish this Activity, back to the stream
+                                    setEditingEnabled(true);
+                                    finish();
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                                    setEditingEnabled(true);
+                                }
+                            });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
         }
     }
 
@@ -188,11 +192,12 @@ public class CreatePostActivity extends BaseActivity{
         mPostBtn.setEnabled(enabled);
     }
 
-    private void createNewPost(String userId, String title, String description, int price, int zipcode) {
+    private void createNewPost(String userId, String title, String description,
+                               int price, int zipcode, String url) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userId, title, description, price, zipcode);
+        Post post = new Post(userId, title, description, price, zipcode, url);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

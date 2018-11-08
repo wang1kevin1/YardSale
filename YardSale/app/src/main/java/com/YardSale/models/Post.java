@@ -13,17 +13,19 @@ public class Post {
     public String description;
     public int price;
     public int zipcode;
+    public String url;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String title, String description, int price, int zipcode) {
+    public Post(String uid, String title, String description, int price, int zipcode, String url) {
         this.uid = uid;
         this.title = title;
         this.description = description;
         this.price = price;
         this.zipcode = zipcode;
+        this.url = url;
     }
 
     @Exclude
@@ -34,6 +36,7 @@ public class Post {
         result.put("description", description);
         result.put("price", price);
         result.put("zipcode", zipcode);
+        result.put("imageURL", url);
 
         return result;
     }
