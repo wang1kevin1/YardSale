@@ -4,19 +4,16 @@ package com.YardSale;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.YardSale.models.Post;
+import com.YardSale.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,11 +22,14 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreatePostActivity extends BaseActivity{
     private static final int GALLERY_REQUEST_CODE = 2;
     private static final String REQUIRED = "Required";
+    private static final String TAG = "CreatePostActivity";
 
     // Initialize Buttons
     ImageButton mImageBtn;
@@ -41,9 +41,6 @@ public class CreatePostActivity extends BaseActivity{
     // Initialize Firebase References
     StorageReference mStorage;
     DatabaseReference mDatabase;
-    DatabaseReference mDatabaseUsers;
-    FirebaseAuth mAuth;
-    FirebaseUser mCurrentUser;
     // Server time stamp
     String mTimestamp;
 
@@ -62,10 +59,7 @@ public class CreatePostActivity extends BaseActivity{
         mPostDesc = findViewById(R.id.PostDescription);
         //Get Firebase Refs
         mStorage = FirebaseStorage.getInstance().getReference();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("posts");
-        mAuth = FirebaseAuth.getInstance();
-        mCurrentUser = mAuth.getCurrentUser();
-        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("uri");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         //Get timestamp
         mTimestamp = ServerValue.TIMESTAMP.toString();
         //Choose gallery image
@@ -92,7 +86,7 @@ public class CreatePostActivity extends BaseActivity{
         final int zipcode = Integer.parseInt(mPostZipcode.getText().toString());
         final String description = mPostDesc.getText().toString();
 
-        // final String userId = getUid();
+        final String userId = getUid();
 
         // Title is required
         if (TextUtils.isEmpty(title)) {
@@ -110,46 +104,44 @@ public class CreatePostActivity extends BaseActivity{
         Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
 
 
+        // temp add user
 
-        // do a check for empty fields
-        if (!TextUtils.isEmpty(description) && !TextUtils.isEmpty(title)){
-            StorageReference filepath = mStorage.child("post_images").child(uri.getLastPathSegment());
-            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    @SuppressWarnings("VisibleForTests")
-                    //getting the post image download url
-                    final Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
-                    Toast.makeText(getApplicationContext(), "Successfully Posted!", Toast.LENGTH_SHORT).show();
-                    final DatabaseReference newPost = mDatabase.push();
-                    //adding post contents to database reference
-                    mDatabaseUsers.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            newPost.child("timestamp").setValue(mTimestamp);
-                            newPost.child("title").setValue(title);
-                            newPost.child("price").setValue(price);
-                            newPost.child("zipcode").setValue(zipcode);
-                            newPost.child("description").setValue(description);
-                            newPost.child("imageUrl").setValue(downloadUrl.toString());
-                            newPost.child("username").setValue(dataSnapshot.child("name").getValue())
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            // When processes done, return to My Posts Activity
-                                            Intent myIntent = new Intent(CreatePostActivity.this,
-                                                    MyPostsActivity.class);
-                                            startActivity(myIntent);
-                                        }
-                                    });
+
+
+        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        User user = dataSnapshot.getValue(User.class);
+
+                        // [START_EXCLUDE]
+                        if (user == null) {
+                            // User is null, error out
+                            Log.e(TAG, "User " + userId + " is unexpectedly null");
+                            Toast.makeText(CreatePostActivity.this,
+                                    "Error: could not fetch user.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Create new post
+                            createNewPost(userId, title, description, price, zipcode);
                         }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }});
-                }});
-        }
+
+                        // Finish this Activity, back to the stream
+                        setEditingEnabled(true);
+                        finish();
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                        setEditingEnabled(true);
+                    }
+                });
     }
 
+
+
+    // disables editing to prevent multiple posts on button spam
     private void setEditingEnabled(boolean enabled) {
         mPostTitle.setEnabled(enabled);
         mPostPrice.setEnabled(enabled);
@@ -159,11 +151,26 @@ public class CreatePostActivity extends BaseActivity{
         mPostBtn.setEnabled(enabled);
     }
 
+    private void createNewPost(String userId, String title, String description, int price, int zipcode) {
+        // Create new post at /user-posts/$userid/$postid and at
+        // /posts/$postid simultaneously
+        String key = mDatabase.child("posts").push().getKey();
+        Post post = new Post(userId, title, description, price, zipcode);
+        Map<String, Object> postValues = post.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/posts/" + key, postValues);
+        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+
+        mDatabase.updateChildren(childUpdates);
+    }
+
+    // shows image on button space after selection
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //Image from gallery result
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
             uri = data.getData();
             mImageBtn.setImageURI(uri);
         }

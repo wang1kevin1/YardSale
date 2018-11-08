@@ -1,21 +1,23 @@
 package com.YardSale;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.YardSale.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Pattern;
 
@@ -35,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
      * Firebase Connection
      */
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -70,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     private void createAccount(String email, String password){
@@ -96,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "createUserWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                writeNewUser(user.getUid(), user.getEmail());
                                 Intent myIntent = new Intent(LoginActivity.this,
                                         MainSearchActivity.class);
                                 startActivity(myIntent);
@@ -195,6 +200,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void writeNewUser(String userId, String email) {
+        User user = new User(email);
+        mDatabase.child("users").child(userId).setValue(user);
     }
 }
 
