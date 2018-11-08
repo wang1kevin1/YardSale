@@ -122,7 +122,8 @@ public class CreatePostActivity extends BaseActivity{
         Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
         if(filepath != null)
         {
-            final StorageReference imageRef = mStorage.child("images/" + filepath.getLastPathSegment());
+            final StorageReference imageRef = mStorage.child(userId).child("post-images/" +
+                    filepath.getLastPathSegment());
             imageRef.putFile(filepath).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
