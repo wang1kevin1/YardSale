@@ -86,7 +86,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
-    private void createAccount(String email, String password, final String postalCode){
+    private void createAccount(String email, String password, String postalCode){
+        final int zipcode = Integer.parseInt(postalCode);
 
         if(email.isEmpty())
             mEmailEditText.setError("Email field is required.");
@@ -105,8 +106,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "createUserWithEmail:success");
-                                //FirebaseUser user = mAuth.getCurrentUser();
-                                //writeNewUser(user.getUid(), user.getEmail(), postalCode);
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                writeNewUser(user.getUid(), user.getEmail(), zipcode);
                                 Intent myIntent = new Intent(CreateAccountActivity.this,
                                         MainSearchActivity.class);
                                 startActivity(myIntent);
@@ -181,8 +182,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         return true;
     }
 
-    private void writeNewUser(String userId, String email, String postalCode) {
-        User user = new User(email, postalCode);
+    private void writeNewUser(String userId, String email, int zipcode) {
+        User user = new User(email, zipcode);
         mDatabase.child("users").child(userId).setValue(user);
     }
 }
