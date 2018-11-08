@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.YardSale.models.User;
@@ -31,13 +32,12 @@ public class LoginActivity extends AppCompatActivity {
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    private static final String TAG = "Login";
+    private static final String TAG = "Sign In";
 
     /**
      * Firebase Connection
      */
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
-    private Button mCreateAccountButton;
+    private TextView mCreateAccountButton;
     private Button mLoginButton;
 
     @Override
@@ -68,52 +68,15 @@ public class LoginActivity extends AppCompatActivity {
         mCreateAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAccount(mEmailEditText.getText().toString().trim(), mPasswordEditText.getText().toString().trim());
+                Intent myIntent = new Intent(LoginActivity.this,
+                        CreateAccountActivity.class);
+                startActivity(myIntent);
             }
         });
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
-    private void createAccount(String email, String password){
-
-        //Set errors to null
-        mPasswordEditText.setError(null);
-        mEmailEditText.setError(null);
-
-        if(email.isEmpty())
-            mEmailEditText.setError("Email field is required.");
-
-        else if(!isEmailValid(email))
-            mEmailEditText.setError("Please enter a valid email");
-
-
-        else if(isPasswordValid(password)){
-
-            //Attempt to create an account
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "createUserWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                writeNewUser(user.getUid(), user.getEmail());
-                                Intent myIntent = new Intent(LoginActivity.this,
-                                        MainSearchActivity.class);
-                                startActivity(myIntent);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }
-    }
 
     private void attemptLogin(String email, String password) {
         //Set errors to null
@@ -152,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isEmailValid(String email) {
+    public boolean isEmailValid(String email) {
         //Basic form for email
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
@@ -168,43 +131,5 @@ public class LoginActivity extends AppCompatActivity {
         return pat.matcher(email).matches();
     }
 
-    private boolean isPasswordValid(String password) {
-        //Makes sure password contains an uppercase letter
-        if (!password.matches(".*[A-Z].*")) {
-            mPasswordEditText.setError("Password must contain at least one uppercase letter");
-            return false;
-        }
-
-        //Makes sure password contains a lowercase letter
-        else if (!password.matches(".*[a-z].*")) {
-            mPasswordEditText.setError("Password must contain at least one lowercase letter");
-            return false;
-        }
-
-        //Makes sure password contains a number
-        else if (!password.matches(".*[0-9].*")) {
-            mPasswordEditText.setError("Password must contain at least one number");
-            return false;
-        }
-
-        //Makes sure password contains a special character
-        else if (!password.matches(".*[!@#$%^&*()_+=;:'.,<>/?`~].*")) {
-            mPasswordEditText.setError("Password must contain at least one of these special characters: !@#$%^&*()_+=;:'.,<>/?`~");
-            return false;
-        }
-
-        //Makes sure password is at least 4 characters long
-        else if(password.length() <= 4) {
-            mPasswordEditText.setError("Password must be at least 5 characters long");
-            return false;
-        }
-
-        return true;
-    }
-
-    private void writeNewUser(String userId, String email) {
-        User user = new User(email);
-        mDatabase.child("users").child(userId).setValue(user);
-    }
 }
 
