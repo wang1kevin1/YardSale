@@ -10,7 +10,7 @@
     <!-- Create Post String Resources -->
     <string name="create_post_title">Create A Post</string>
     <string name="posttitle">Title</string>
-    <string name="postprice">$0</string>
+    <string name="postprice">0</string>
     <string name="postzipcode">Zipcode</string>
     <string name="postdescription">Description&#8230;</string>
     <string name="postcreate">CREATE</string>
