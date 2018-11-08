@@ -4,6 +4,7 @@ package com.YardSale;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.YardSale.models.Post;
 import com.YardSale.models.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +25,7 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +39,7 @@ public class CreatePostActivity extends BaseActivity{
     ImageButton mImageBtn;
     Button mPostBtn;
     // Initialize gallery items
-    Uri uri = null;
+    Uri filepath;
     //Initialize EditText input items
     EditText mPostTitle, mPostPrice, mPostZipcode, mPostDesc;
     // Initialize Firebase References
@@ -62,6 +66,7 @@ public class CreatePostActivity extends BaseActivity{
         mDatabase = FirebaseDatabase.getInstance().getReference();
         //Get timestamp
         mTimestamp = ServerValue.TIMESTAMP.toString();
+
         //Choose gallery image
         mImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,26 +76,40 @@ public class CreatePostActivity extends BaseActivity{
                 startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
             }
         });
+
         //Upload to Firebase
         mPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NewPost();
+                UploadImage();
             }
         });
     }
 
     public void NewPost() {
         final String title = mPostTitle.getText().toString().trim();
-        final int price = Integer.parseInt(mPostPrice.getText().toString().substring(1));
-        final int zipcode = Integer.parseInt(mPostZipcode.getText().toString());
+        final String price = mPostPrice.getText().toString().substring(1);
+        final String zipcode = mPostZipcode.getText().toString();
         final String description = mPostDesc.getText().toString();
 
         final String userId = getUid();
 
+
+
         // Title is required
         if (TextUtils.isEmpty(title)) {
             mPostTitle.setError(REQUIRED);
+            return;
+        }
+        // Price is required
+        if (TextUtils.isEmpty(price)) {
+            mPostPrice.setError(REQUIRED);
+            return;
+        }
+        // Zipcode is required
+        if (TextUtils.isEmpty(zipcode)) {
+            mPostZipcode.setError(REQUIRED);
             return;
         }
         // Description is required
@@ -102,11 +121,6 @@ public class CreatePostActivity extends BaseActivity{
         // Disable button so there are no multi-posts
         setEditingEnabled(false);
         Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
-
-
-        // temp add user
-
-
 
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -124,7 +138,10 @@ public class CreatePostActivity extends BaseActivity{
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Create new post
-                            createNewPost(userId, title, description, price, zipcode);
+                            createNewPost(userId, title, description,
+                                    Integer.parseInt(price), Integer.parseInt(zipcode));
+                            Toast.makeText(getApplicationContext(), "Successfully Posted!",
+                                    Toast.LENGTH_SHORT).show();
                         }
 
                         // Finish this Activity, back to the stream
@@ -139,7 +156,27 @@ public class CreatePostActivity extends BaseActivity{
                 });
     }
 
-
+    private void UploadImage() {
+        if(filepath != null)
+        {
+            StorageReference imageRef = mStorage.child("images/" + filepath.getLastPathSegment());
+            imageRef.putFile(filepath)
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(CreatePostActivity.this, "Failed " +
+                                    e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                            // ...
+                        }
+                    });
+        }
+    }
 
     // disables editing to prevent multiple posts on button spam
     private void setEditingEnabled(boolean enabled) {
@@ -170,9 +207,10 @@ public class CreatePostActivity extends BaseActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //Image from gallery result
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
-            uri = data.getData();
-            mImageBtn.setImageURI(uri);
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK
+                && data != null && data.getData() != null ) {
+            filepath = data.getData();
+            mImageBtn.setImageURI(filepath);
         }
     }
 }
