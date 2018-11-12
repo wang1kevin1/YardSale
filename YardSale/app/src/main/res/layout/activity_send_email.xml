@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/SendAnEmail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <android.support.v7.widget.Toolbar
+        app:title="@string/app_name"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+    <EditText
+        android:id="@+id/emailName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/emailTo" />
+
+    <EditText
+        android:id="@+id/subjectName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/emailSubject" />
+
+    <EditText
+        android:id="@+id/bodyName"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="top"
+        android:hint="@string/emailMessage" />
+
+    <Button
+        android:id="@+id/sendEmail"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="@string/emailSend" />
+</LinearLayout>

@@ -34,4 +34,11 @@
     <!-- Search String Resources -->
     <string name="search_title">Listings</string>
     <string name="search_hint">Search</string>
+    <string name="title_activity_send_email">SendEmailActivity</string>
+
+    <!-- Send Email String Resources -->
+    <string name="emailTo">To</string>
+    <string name="emailSubject">Subject</string>
+    <string name="emailMessage">Message</string>
+    <string name="emailSend">Send</string>
 </resources>

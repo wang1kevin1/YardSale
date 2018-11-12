@@ -32,4 +32,6 @@ public class MainSearchActivity extends AppCompatActivity {
     public void goToAccount(View v) {
         //Add intent
     }
+
+
 }
