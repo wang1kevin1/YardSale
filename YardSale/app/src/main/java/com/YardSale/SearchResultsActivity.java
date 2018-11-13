@@ -27,4 +27,25 @@ public class SearchResultsActivity extends Activity {
         }
     }
 
+    mDatabase = FirebaseDatabase.getInstance().getReference("user-posts");
+    Query  query = mDatabase.orderByChild("zipcode").equalTo(zipcode);
+            query .addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            if(dataSnapshot.getChildrenCount() > 0){
+                System.out.println("count : "+ dataSnapshot.getChildrenCount());
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    value = child.getValue(String.class);
+                    tSResult.setText(value);
+                }
+            }
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    });
+
 }
