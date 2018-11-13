@@ -5,5 +5,5 @@ Group Members:
 kwang43 (Project Owner)  
 sbell1 (Sprint 1 SCRUM Master)  
 ymao7 (Sprint 2 SCRUM Master)  
-dguyenne  
+dguyenne (Sprint 3 SCRUM Master)  
 nabuamar  
