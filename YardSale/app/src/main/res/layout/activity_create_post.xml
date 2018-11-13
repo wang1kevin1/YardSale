@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/posttitle"
         android:importantForAutofill="no"
-        android:inputType="textCapCharacters"/>
+        android:inputType="textCapCharacters"
+        android:maxLines="1" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,9 +26,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="$"
             android:hint="@string/postprice"
             android:importantForAutofill="no"
-            android:inputType="number" />
+            android:inputType="number"
+            android:maxLength="6"/>
         <EditText
             android:id="@+id/PostZipcode"
             android:layout_width="0dp"
@@ -35,7 +38,16 @@
             android:layout_weight="1"
             android:hint="@string/postzipcode"
             android:importantForAutofill="no"
-            android:inputType="number" />
+            android:inputType="number"
+            android:maxLength="5" />
+        <ImageButton
+            android:id="@+id/AttachButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_attach_image_24dp"
+            android:contentDescription="Attach a Picture"/>
     </LinearLayout>
     <EditText
         android:id="@+id/PostDescription"
@@ -45,13 +57,13 @@
         android:gravity="top"
         android:hint="@string/postdescription"
         android:importantForAutofill="no"
-        android:inputType="textAutoCorrect"/>
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:scrollHorizontally="false"/>
     <Button
         android:id="@+id/CreateButton"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/postcreate"
-        android:clickable="true"
-        android:onClick="onClickCreatePost" />
+        android:text="@string/postcreate" />
 </LinearLayout>
