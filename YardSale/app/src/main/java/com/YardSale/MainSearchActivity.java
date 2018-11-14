@@ -6,24 +6,24 @@ import android.view.View;
 import android.content.Intent;
 
 
-public class MainMenuActivity extends AppCompatActivity {
+public class MainSearchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(R.layout.activity_main_search);
     }
 
     // On button click goes to search activity
     public void goToBrowse(View v) {
-        Intent myIntent = new Intent(MainMenuActivity.this,
+        Intent myIntent = new Intent(MainSearchActivity.this,
                 SearchResultsActivity.class);
         startActivity(myIntent);
     }
 
     // On button click goes to MyPostsActivity
     public void goToPosts(View v) {
-        Intent myIntent = new Intent(MainMenuActivity.this,
+        Intent myIntent = new Intent(MainSearchActivity.this,
                 MyPostsActivity.class);
         startActivity(myIntent);
     }

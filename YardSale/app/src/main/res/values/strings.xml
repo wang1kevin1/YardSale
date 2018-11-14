@@ -10,13 +10,26 @@
     <!-- Create Post String Resources -->
     <string name="create_post_title">Create A Post</string>
     <string name="posttitle">Title</string>
-    <string name="postprice">$0</string>
+    <string name="postprice">0</string>
     <string name="postzipcode">Zipcode</string>
     <string name="postdescription">Description&#8230;</string>
     <string name="postcreate">CREATE</string>
 
     <!-- My Posts String Resources -->
     <string name="my_posts_title">My Posts</string>
+
+    <!-- Login/Create Account Activity -->
+    <string name="login">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="prompt_postal_code">Postal Code</string>
+    <string name="prompt_new_to_yardsale">New to YardSale? Create a new account here.</string>
+    <string name="hint_email">Enter Email</string>
+    <string name="hint_password">Enter Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="hint_postal_code">Enter Postal Code</string>
 
     <!-- Search String Resources -->
     <string name="search_title">Listings</string>

@@ -2,42 +2,221 @@ package com.YardSale;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
-public class CreatePostActivity extends AppCompatActivity {
+import com.YardSale.models.Post;
+import com.YardSale.models.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-    // Text variables for input
-    EditText PostTitle, PostPrice, PostZipcode, PostDescription;
+import java.util.HashMap;
+import java.util.Map;
+
+public class CreatePostActivity extends BaseActivity{
+    private static final int GALLERY_REQUEST_CODE = 2;
+    private static final String REQUIRED = "Required";
+    private static final String TAG = "CreatePostActivity";
+
+    // Initialize Buttons
+    ImageButton mImageBtn;
+    Button mPostBtn;
+    // Initialize gallery items
+    Uri filepath;
+    Uri downloadUrl;
+    //Initialize EditText input items
+    EditText mPostTitle, mPostPrice, mPostZipcode, mPostDesc;
+    // Initialize Firebase References
+    StorageReference mStorage;
+    DatabaseReference mDatabase;
+    // Server time stamp
+    String mTimestamp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
 
-        // Locate text input in layout
-        PostTitle = findViewById(R.id.PostTitle);
-        PostPrice = findViewById(R.id.PostPrice);
-        PostZipcode = findViewById(R.id.PostZipcode);
-        PostDescription = findViewById(R.id.PostDescription);
+        //Get buttons
+        mPostBtn = findViewById(R.id.CreateButton);
+        mImageBtn = findViewById(R.id.AttachButton);
+        //Get text
+        mPostTitle = findViewById(R.id.PostTitle);
+        mPostPrice = findViewById(R.id.PostPrice);
+        mPostZipcode = findViewById(R.id.PostZipcode);
+        mPostDesc = findViewById(R.id.PostDescription);
+        //Get Firebase Refs
+        mStorage = FirebaseStorage.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        //Get timestamp
+        mTimestamp = ServerValue.TIMESTAMP.toString();
+
+        //Choose gallery image
+        mImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+            }
+        });
+
+        //Upload to Firebase
+        mPostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NewPost();
+            }
+        });
     }
 
-    // On button click, grabs form input and stores in database.
-    // Then returns to MyPostsActivity
-    public void onClickCreatePost(View v) {
-        // Get data entry
-        String title = PostTitle.getText().toString();
-        String price = PostPrice.getText().toString();
-        String zipcode = PostZipcode.getText().toString();
-        String description = PostDescription.getText().toString();
+    public void NewPost() {
+        final String title = mPostTitle.getText().toString().trim();
+        final String price = mPostPrice.getText().toString().substring(1);
+        final String zipcode = mPostZipcode.getText().toString();
+        final String description = mPostDesc.getText().toString();
 
-        // send data values to Firebase
+        final String userId = getUid();
 
-        // When processes done, return to My Posts Activity
-        Intent myIntent = new Intent(CreatePostActivity.this,
-                MyPostsActivity.class);
-        startActivity(myIntent);
+
+        // Title is required
+        if (TextUtils.isEmpty(title)) {
+            mPostTitle.setError(REQUIRED);
+            return;
+        }
+        // Price is required
+        if (TextUtils.isEmpty(price)) {
+            mPostPrice.setError(REQUIRED);
+            return;
+        }
+        // Zipcode is required
+        if (TextUtils.isEmpty(zipcode)) {
+            mPostZipcode.setError(REQUIRED);
+            return;
+        }
+        // Description is required
+        if (TextUtils.isEmpty(description)) {
+            mPostDesc.setError(REQUIRED);
+            return;
+        }
+
+        // Disable button so there are no multi-posts
+        setEditingEnabled(false);
+        Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
+        if(filepath != null)
+        {
+            final StorageReference imageRef = mStorage.child(userId).child("post-images/" +
+                    filepath.getLastPathSegment());
+            imageRef.putFile(filepath).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                }
+            });
+
+            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    downloadUrl = uri;
+                    mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    // Get user value
+                                    User user = dataSnapshot.getValue(User.class);
+
+                                    if (user == null) {
+                                        // User is null, error out
+                                        Log.e(TAG, "User " + userId + " is unexpectedly null");
+                                        Toast.makeText(CreatePostActivity.this,
+                                                "Error: could not fetch user.",
+                                                Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // Create new post
+                                        createNewPost(userId, title, description,
+                                                Integer.parseInt(price), Integer.parseInt(zipcode),
+                                                downloadUrl.toString());
+                                        Toast.makeText(getApplicationContext(), "Successfully Posted!",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    // Finish this Activity, back to the stream
+                                    setEditingEnabled(true);
+                                    finish();
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                                    setEditingEnabled(true);
+                                }
+                            });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
+    }
+
+    // disables editing to prevent multiple posts on button spam
+    private void setEditingEnabled(boolean enabled) {
+        mPostTitle.setEnabled(enabled);
+        mPostPrice.setEnabled(enabled);
+        mPostZipcode.setEnabled(enabled);
+        mPostDesc.setEnabled(enabled);
+        mImageBtn.setEnabled(enabled);
+        mPostBtn.setEnabled(enabled);
+    }
+
+    private void createNewPost(String userId, String title, String description,
+                               int price, int zipcode, String url) {
+        // Create new post at /user-posts/$userid/$postid and at
+        // /posts/$postid simultaneously
+        String key = mDatabase.child("posts").push().getKey();
+        Post post = new Post(userId, title, description, price, zipcode, url);
+        Map<String, Object> postValues = post.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/posts/" + key, postValues);
+        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+
+        mDatabase.updateChildren(childUpdates);
+    }
+
+    // shows image on button space after selection
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Image from gallery result
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK
+                && data != null && data.getData() != null ) {
+            filepath = data.getData();
+            mImageBtn.setImageURI(filepath);
+        }
     }
 }

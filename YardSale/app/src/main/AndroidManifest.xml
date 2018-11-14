@@ -14,7 +14,11 @@
 
         <!-- Login Activity -->
         <activity
+<<<<<<< HEAD
             android:name=".Activities.LoginActivity"
+=======
+            android:name=".LoginActivity"
+>>>>>>> develop
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
@@ -30,9 +34,23 @@
             </intent-filter>
         </activity>
 
+<<<<<<< HEAD
         <!-- Main Menu Activity -->
         <activity
             android:name=".MainMenuActivity"
+=======
+        <!-- Create Account Activity -->
+        <activity
+            android:name=".CreateAccountActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+
+        <!-- Main Menu Activity -->
+        <activity
+            android:name=".MainSearchActivity"
+>>>>>>> develop
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
@@ -43,7 +61,11 @@
             android:name=".SearchResultsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/search_title"
+<<<<<<< HEAD
             android:parentActivityName=".MainMenuActivity"
+=======
+            android:parentActivityName=".MainSearchActivity"
+>>>>>>> develop
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -57,10 +79,17 @@
 
         <!-- My Posts Activity -->
         <activity
+<<<<<<< HEAD
             android:name=".Activities.MyPostsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/my_posts_title"
             android:parentActivityName=".MainMenuActivity"
+=======
+            android:name=".MyPostsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/my_posts_title"
+            android:parentActivityName=".MainSearchActivity"
+>>>>>>> develop
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"></activity>
 
@@ -69,7 +98,11 @@
             android:name=".CreatePostActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/create_post_title"
+<<<<<<< HEAD
             android:parentActivityName=".Activities.MyPostsActivity"
+=======
+            android:parentActivityName=".MyPostsActivity"
+>>>>>>> develop
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"></activity>
     </application>
