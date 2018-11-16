@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CreatePostActivity extends BaseActivity{
+
     private static final int GALLERY_REQUEST_CODE = 2;
     private static final String REQUIRED = "Required";
     private static final String TAG = "CreatePostActivity";

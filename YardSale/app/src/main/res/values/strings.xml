@@ -34,4 +34,8 @@
     <!-- Search String Resources -->
     <string name="search_title">Listings</string>
     <string name="search_hint">Search</string>
+    
+    <!-- Account Settings Resources -->
+    <string name="prompt_update_settings">Update Settings</string>
+    <strong name="account_settings">Account Settings</strong>
 </resources>

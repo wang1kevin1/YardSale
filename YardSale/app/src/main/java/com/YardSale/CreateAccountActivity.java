@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.YardSale.models.User;
+import com.YardSale.utils.AccountUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.regex.Pattern;
 
 /**
  * A login screen that offers login via email/password.
@@ -92,11 +90,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         if(email.isEmpty())
             mEmailEditText.setError("Email field is required.");
 
-        else if(!isEmailValid(email))
+        else if(!AccountUtil.isEmailValid(email))
             mEmailEditText.setError("Please enter a valid email");
 
 
-        else if(isPasswordValid(password) && isValidPostalCode(postalCode)){
+        else if(AccountUtil.isPasswordValid(password, mPasswordEditText) && AccountUtil.isValidPostalCode(postalCode, mPostalCodeEditText)){
 
             //Attempt to create an account
             mAuth.createUserWithEmailAndPassword(email, password)
@@ -107,7 +105,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "createUserWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                writeNewUser(user.getUid(), user.getEmail(), zipcode);
+                                AccountUtil.writeUser(user.getUid(), user.getEmail(), zipcode);
                                 Intent myIntent = new Intent(CreateAccountActivity.this,
                                         MainSearchActivity.class);
                                 startActivity(myIntent);
@@ -120,71 +118,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                         }
                     });
         }
-    }
-
-    private boolean isEmailValid(String email) {
-        //Basic form for email
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-
-        Pattern pat = Pattern.compile(emailRegex);
-        if (email == null)
-            return false;
-
-        //If email doesn't match form, it will return false, otherwise true.
-        //Does not check for validity of actual email or domain.
-        return pat.matcher(email).matches();
-    }
-
-    private boolean isPasswordValid(String password) {
-        //Makes sure password contains an uppercase letter
-        if (!password.matches(".*[A-Z].*")) {
-            mPasswordEditText.setError("Password must contain at least one uppercase letter");
-            return false;
-        }
-
-        //Makes sure password contains a lowercase letter
-        else if (!password.matches(".*[a-z].*")) {
-            mPasswordEditText.setError("Password must contain at least one lowercase letter");
-            return false;
-        }
-
-        //Makes sure password contains a number
-        else if (!password.matches(".*[0-9].*")) {
-            mPasswordEditText.setError("Password must contain at least one number");
-            return false;
-        }
-
-        //Makes sure password contains a special character
-        else if (!password.matches(".*[!@#$%^&*()_+=;:'.,<>/?`~].*")) {
-            mPasswordEditText.setError("Password must contain at least one of these special characters: !@#$%^&*()_+=;:'.,<>/?`~");
-            return false;
-        }
-
-        //Makes sure password is at least 4 characters long
-        else if(password.length() <= 4) {
-            mPasswordEditText.setError("Password must be at least 5 characters long");
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean isValidPostalCode(String postalCode){
-        if(postalCode.isEmpty())
-            mPostalCodeEditText.setError("Postal Code field is required");
-
-        if(postalCode.length()!=5)
-            mPostalCodeEditText.setError("Please enter a valid postal code");
-
-        return true;
-    }
-
-    private void writeNewUser(String userId, String email, int zipcode) {
-        User user = new User(email, zipcode);
-        mDatabase.child("users").child(userId).setValue(user);
     }
 }
 

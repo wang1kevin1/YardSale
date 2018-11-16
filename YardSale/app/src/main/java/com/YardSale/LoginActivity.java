@@ -11,16 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.YardSale.models.User;
+import com.YardSale.utils.AccountUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.regex.Pattern;
 
 /**
  * A login screen that offers login via email/password.
@@ -65,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin(mEmailEditText.getText().toString().trim(), mPasswordEditText.getText().toString().trim());
             }
         });
+
         mCreateAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         if(email.isEmpty())
             mEmailEditText.setError("Email field is required.");
 
-        else if(!isEmailValid(email))
+        else if(!AccountUtil.isEmailValid(email))
             mEmailEditText.setError("Please enter a valid email");
 
         else{
@@ -99,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "loginUserWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
                                 Intent myIntent = new Intent(LoginActivity.this,
                                         MainSearchActivity.class);
                                 startActivity(myIntent);
@@ -113,22 +108,6 @@ public class LoginActivity extends AppCompatActivity {
                     });
 
         }
-    }
-
-    public boolean isEmailValid(String email) {
-        //Basic form for email
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-
-        Pattern pat = Pattern.compile(emailRegex);
-        if (email == null)
-            return false;
-
-        //If email doesn't match form, it will return false, otherwise true.
-        //Does not check for validity of actual email or domain.
-        return pat.matcher(email).matches();
     }
 
 }

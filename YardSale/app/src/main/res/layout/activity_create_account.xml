@@ -69,7 +69,6 @@
                 android:layout_alignStart="@+id/editTextEmail"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="250dp"
-                android:contentDescription="password"
                 android:ems="10"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword" />
@@ -92,6 +91,7 @@
                 android:layout_alignStart="@+id/editTextEmail"
                 android:layout_marginBottom="-175dp"
                 android:text="@string/prompt_email"
+                android:textSize="15sp"
                 android:textColor="@color/colorBlack"
                 android:visibility="visible" />
 
@@ -104,10 +104,10 @@
                 android:layout_alignStart="@+id/editTextEmail"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
-                android:text="Password:"
+                android:textSize="15sp"
+                android:text="@string/prompt_password"
                 android:textColor="@color/colorBlack"
-                android:visibility="visible"
-                tools:text="@string/prompt_password" />
+                android:visibility="visible" />
 
             <EditText
                 android:id="@+id/editTextConfirmPassword"
@@ -129,6 +129,7 @@
                 android:layout_alignStart="@+id/editTextEmail"
                 android:layout_marginBottom="-325dp"
                 android:textColor="@color/colorBlack"
+                android:textSize="15sp"
                 android:visibility="visible"
                 android:text="@string/prompt_confirm_password" />
 
@@ -140,6 +141,7 @@
                 android:layout_alignStart="@+id/editTextEmail"
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="3dp"
+                android:textSize="15sp"
                 android:text="@string/prompt_postal_code"
                 android:textColor="@color/colorBlack"
                 android:visibility="visible" />
