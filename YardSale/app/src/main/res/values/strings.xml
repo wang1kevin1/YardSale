@@ -5,7 +5,6 @@
     <!-- Main Menu Activity -->
     <string name="browse_posts">BROWSE LISTINGS</string>
     <string name="my_posts">MY POSTS</string>
-    <string name="account_settings">ACCOUNT SETTINGS</string>
 
     <!-- Create Post String Resources -->
     <string name="create_post_title">Create A Post</string>
@@ -37,5 +36,5 @@
     
     <!-- Account Settings Resources -->
     <string name="prompt_update_settings">Update Settings</string>
-    <strong name="account_settings">Account Settings</strong>
+    <string name="account_settings">Account Settings</string>
 </resources>
