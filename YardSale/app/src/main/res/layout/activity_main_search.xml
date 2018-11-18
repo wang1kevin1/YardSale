@@ -24,6 +24,7 @@
         app:iconifiedByDefault="false"
         android:windowSoftInputMode="stateHidden" />
 
+
     <Button
         android:id="@+id/MenuBrowseButton"
         android:layout_width="match_parent"
