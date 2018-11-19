@@ -42,9 +42,9 @@ public class SearchResultsActivity extends Activity {
     private void handleIntent(Intent intent) {
 
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            DatabaseReference mDatabase;
+        //if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+          //  String query = intent.getStringExtra(SearchManager.QUERY);
+            //DatabaseReference mDatabase;
             /*mDatabase = FirebaseDatabase.getInstance().getReference();
             System.out.println(query);
             mDatabase.child("posts").orderByChild("zipcode").equalTo(query).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -59,6 +59,9 @@ public class SearchResultsActivity extends Activity {
 
                 }
             });*/
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            DatabaseReference mDatabase;
             //use the query to search your data somehow
             mDatabase = FirebaseDatabase.getInstance().getReference("posts");
             Query query2 = mDatabase.orderByChild("zipcode").equalTo(query);
