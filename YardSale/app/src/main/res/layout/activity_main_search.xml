@@ -24,6 +24,13 @@
         app:iconifiedByDefault="false"
         android:windowSoftInputMode="stateHidden" />
 
+    <TextView
+        android:id="@+id/text_view_id"
+        android:layout_width="167dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal" />
+
+
     <Button
         android:id="@+id/MenuBrowseButton"
         android:layout_width="match_parent"
