@@ -41,11 +41,11 @@ public class SearchResultsActivity extends Activity {
 
     private void handleIntent(Intent intent) {
 
-
-        //if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-          //  String query = intent.getStringExtra(SearchManager.QUERY);
-            //DatabaseReference mDatabase;
-            /*mDatabase = FirebaseDatabase.getInstance().getReference();
+        //IGNORE
+        /*if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            DatabaseReference mDatabase;
+            *mDatabase = FirebaseDatabase.getInstance().getReference();
             System.out.println(query);
             mDatabase.child("posts").orderByChild("zipcode").equalTo(query).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -59,19 +59,27 @@ public class SearchResultsActivity extends Activity {
 
                 }
             });*/
+
+        // If user enters query into search bar
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             DatabaseReference mDatabase;
-            //use the query to search your data somehow
+            //get reference to posts in database
             mDatabase = FirebaseDatabase.getInstance().getReference("posts");
+            /* Query sorts and filters the data at database location so only a subset of the child
+            data is included. Orders the data by zipcode and checks if its equal to the users
+            query.*/
             Query query2 = mDatabase.orderByChild("zipcode").equalTo(query);
+            // Attach a listener to read the data at posts reference
             query2.addValueEventListener(new ValueEventListener() {
                 @Override
+                //Iterate through data snapshot that match query
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.getChildrenCount() > 0){
                         System.out.println("count : "+ dataSnapshot.getChildrenCount());
                         for(DataSnapshot child : dataSnapshot.getChildren()){
                             String value = child.getValue(String.class);
+                            //Display result in textView (temporary)
                             tSResult.setText(value);
                         }
                     }
@@ -80,6 +88,7 @@ public class SearchResultsActivity extends Activity {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
+
 
                 }
         });
