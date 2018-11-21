@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.YardSale.models.Post;
@@ -37,7 +36,7 @@ public class CreatePostActivity extends BaseActivity{
     private static final String TAG = "CreatePostActivity";
 
     // Initialize Buttons
-    ImageButton mImageBtn;
+    Button mImageBtn;
     Button mPostBtn;
     // Initialize gallery items
     Uri filepath;
@@ -90,7 +89,7 @@ public class CreatePostActivity extends BaseActivity{
 
     public void NewPost() {
         final String title = mPostTitle.getText().toString().trim();
-        final String price = mPostPrice.getText().toString().substring(1);
+        final String price = mPostPrice.getText().toString();
         final String zipcode = mPostZipcode.getText().toString();
         final String description = mPostDesc.getText().toString();
 
@@ -217,7 +216,7 @@ public class CreatePostActivity extends BaseActivity{
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK
                 && data != null && data.getData() != null ) {
             filepath = data.getData();
-            mImageBtn.setImageURI(filepath);
+            //mImageBtn.setImageURI(filepath);
         }
     }
 }
