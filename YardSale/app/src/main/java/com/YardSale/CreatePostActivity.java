@@ -7,13 +7,17 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.YardSale.adapters.HRecyclerViewAdapter;
 import com.YardSale.models.Post;
 import com.YardSale.models.User;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CreatePostActivity extends BaseActivity{
+public class CreatePostActivity extends BaseActivity {
 
     private static final int GALLERY_REQUEST_CODE = 2;
     private static final String REQUIRED = "Required";
@@ -44,6 +48,12 @@ public class CreatePostActivity extends BaseActivity{
     List<String> imagesEncodedList;
     ArrayList<Uri> mArrayUri;
     Uri mImageUri;
+
+    //Image display
+    HRecyclerViewAdapter imageAdapter;
+    RecyclerView imageRecyclerView;
+    ImageView singleView;
+
     //Initialize EditText input items
     EditText mPostTitle, mPostPrice, mPostZipcode, mPostDesc;
     // Initialize Firebase References
@@ -65,6 +75,11 @@ public class CreatePostActivity extends BaseActivity{
         mPostPrice = findViewById(R.id.PostPrice);
         mPostZipcode = findViewById(R.id.PostZipcode);
         mPostDesc = findViewById(R.id.PostDescription);
+
+        //get image recycler view stuff
+        imageRecyclerView = (RecyclerView) findViewById(R.id.horizontal_recycler_view);
+        singleView = (ImageView) findViewById(R.id.singleView);
+
         //Get Firebase Refs
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -102,9 +117,12 @@ public class CreatePostActivity extends BaseActivity{
                     data != null ) {
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     imagesEncodedList = new ArrayList<>();
+                    mArrayUri = new ArrayList<>();
+                    mArrayUri.clear();
+                    singleView.setImageURI(null);
+
                 if (data.getData() != null) { //on Single image selected
                     mImageUri = data.getData();
-
                     // Get the cursor
                     Cursor cursor = getContentResolver().query(mImageUri, filePathColumn, null, null, null);
                     // Move to first row
@@ -115,10 +133,20 @@ public class CreatePostActivity extends BaseActivity{
                     cursor.close();
 
                     Log.v("CreatePostActivity", "Selected Images: 1");
+                    singleView.setImageURI(mImageUri);
+
+                    // fill in recycler view with images
+                    imageAdapter = new HRecyclerViewAdapter(mArrayUri, getApplication());
+
+                    LinearLayoutManager hLayoutManager =
+                            new LinearLayoutManager(CreatePostActivity.this,
+                                    LinearLayoutManager.HORIZONTAL, false);
+                    imageRecyclerView.setLayoutManager(hLayoutManager);
+                    imageRecyclerView.setAdapter(imageAdapter);
                     } else { //on Multiple image selected
                         if(data.getClipData() != null) {
                             ClipData mClipData = data.getClipData();
-                            mArrayUri = new ArrayList<>();
+
                             for (int i = 0; i < mClipData.getItemCount(); i++) {
 
                                 ClipData.Item item = mClipData.getItemAt(i);
@@ -136,6 +164,15 @@ public class CreatePostActivity extends BaseActivity{
 
                             }
                             Log.v("CreatePostActivity", "Selected Images " + mArrayUri.size());
+
+                            // fill in recycler view with images
+                            imageAdapter = new HRecyclerViewAdapter(mArrayUri, getApplication());
+
+                            LinearLayoutManager hLayoutManager =
+                                    new LinearLayoutManager(CreatePostActivity.this,
+                                            LinearLayoutManager.HORIZONTAL, false);
+                            imageRecyclerView.setLayoutManager(hLayoutManager);
+                            imageRecyclerView.setAdapter(imageAdapter);
                         }
                 }
             } else {
