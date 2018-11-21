@@ -38,7 +38,7 @@ public class PostUtil {
             throw new PostReadException(postID + " is not a valid post ID");
         }
 
-        return new Post(uid, title, description, price, postalCode, url);
+        return new Post(uid, title, description, price, postalCode);
     }
 
 }
