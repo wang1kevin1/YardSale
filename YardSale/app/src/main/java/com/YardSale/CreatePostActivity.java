@@ -1,9 +1,12 @@
 package com.YardSale;
 
 
+import android.content.ClipData;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,7 +29,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreatePostActivity extends BaseActivity{
@@ -41,6 +46,10 @@ public class CreatePostActivity extends BaseActivity{
     // Initialize gallery items
     Uri filepath;
     Uri downloadUrl;
+    //Image selection
+    String imageEncoded;
+    List<String> imagesEncodedList;
+    ArrayList<Uri> mArrayUri;
     //Initialize EditText input items
     EditText mPostTitle, mPostPrice, mPostZipcode, mPostDesc;
     // Initialize Firebase References
@@ -72,9 +81,12 @@ public class CreatePostActivity extends BaseActivity{
         mImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+                        GALLERY_REQUEST_CODE);
             }
         });
 
@@ -86,6 +98,62 @@ public class CreatePostActivity extends BaseActivity{
             }
         });
     }
+
+    // Select images to add to post
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try{
+            if(requestCode == GALLERY_REQUEST_CODE &&
+                    resultCode == RESULT_OK &&
+                    data != null ) {
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    imagesEncodedList = new ArrayList<String>();
+                if (data.getData() != null) { //on Single image selected
+                    Uri mImageUri = data.getData();
+
+                    // Get the cursor
+                    Cursor cursor = getContentResolver().query(mImageUri, filePathColumn, null, null, null);
+                    // Move to first row
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imageEncoded = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    Log.v("CreatePostActivity", "Selected Images: 1");
+                    } else { //on Multiple image selected
+                        if(data.getClipData() != null) {
+                            ClipData mClipData = data.getClipData();
+                            mArrayUri = new ArrayList<>();
+                            for (int i = 0; i < mClipData.getItemCount(); i++) {
+
+                                ClipData.Item item = mClipData.getItemAt(i);
+                                Uri uri = item.getUri();
+                                mArrayUri.add(uri);
+                                // Get the cursor
+                                Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                                // Move to first row
+                                cursor.moveToFirst();
+
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                imageEncoded = cursor.getString(columnIndex);
+                                imagesEncodedList.add(imageEncoded);
+                                cursor.close();
+
+                            }
+                            Log.v("CreatePostActivity", "Selected Images " + mArrayUri.size());
+                        }
+                }
+            } else {
+                Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     public void NewPost() {
         final String title = mPostTitle.getText().toString().trim();
@@ -206,17 +274,5 @@ public class CreatePostActivity extends BaseActivity{
         childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
 
         mDatabase.updateChildren(childUpdates);
-    }
-
-    // shows image on button space after selection
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //Image from gallery result
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK
-                && data != null && data.getData() != null ) {
-            filepath = data.getData();
-            //mImageBtn.setImageURI(filepath);
-        }
     }
 }
