@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.YardSale.adapters.HRecyclerViewAdapter;
+import com.YardSale.adapters.CreatePostRecyclerAdapter;
 import com.YardSale.models.Post;
 import com.YardSale.models.User;
 import com.google.firebase.database.DataSnapshot;
@@ -50,7 +50,7 @@ public class CreatePostActivity extends BaseActivity {
     Uri mImageUri;
 
     //Image display
-    HRecyclerViewAdapter imageAdapter;
+    CreatePostRecyclerAdapter imageAdapter;
     RecyclerView imageRecyclerView;
     ImageView singleView;
 
@@ -136,7 +136,7 @@ public class CreatePostActivity extends BaseActivity {
                     singleView.setImageURI(mImageUri);
 
                     // fill in recycler view with images
-                    imageAdapter = new HRecyclerViewAdapter(mArrayUri, getApplication());
+                    imageAdapter = new CreatePostRecyclerAdapter(mArrayUri, getApplication());
 
                     LinearLayoutManager hLayoutManager =
                             new LinearLayoutManager(CreatePostActivity.this,
@@ -166,7 +166,7 @@ public class CreatePostActivity extends BaseActivity {
                             Log.v("CreatePostActivity", "Selected Images " + mArrayUri.size());
 
                             // fill in recycler view with images
-                            imageAdapter = new HRecyclerViewAdapter(mArrayUri, getApplication());
+                            imageAdapter = new CreatePostRecyclerAdapter(mArrayUri, getApplication());
 
                             LinearLayoutManager hLayoutManager =
                                     new LinearLayoutManager(CreatePostActivity.this,

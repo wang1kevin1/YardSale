@@ -12,38 +12,39 @@ import com.YardSale.R;
 
 import java.util.ArrayList;
 
-public class HRecyclerViewAdapter extends RecyclerView.Adapter<HRecyclerViewAdapter.MyViewHolder> {
+public class CreatePostRecyclerAdapter extends RecyclerView.Adapter<CreatePostRecyclerAdapter.CreatePostViewHolder> {
 
 
     ArrayList<Uri> horizontalList;
     Context context;
 
 
-    public HRecyclerViewAdapter(ArrayList<Uri> horizontalList, Context context) {
+    public CreatePostRecyclerAdapter(ArrayList<Uri> horizontalList, Context context) {
         this.horizontalList = horizontalList;
         this.context = context;
     }
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class CreatePostViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
-        public MyViewHolder(View view) {
+
+        public CreatePostViewHolder(View view) {
             super(view);
             imageView=(ImageView) view.findViewById(R.id.imageView);
         }
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CreatePostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.post_image_item, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new CreatePostViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final CreatePostViewHolder holder, final int position) {
 
         holder.imageView.setImageURI(horizontalList.get(position));
     }
