@@ -240,8 +240,8 @@ public class CreatePostActivity extends BaseActivity {
                             storePost(userId,
                                     title,
                                     description,
-                                    Integer.parseInt(price),
-                                    Integer.parseInt(zipcode));
+                                    price,
+                                    zipcode);
                             Toast.makeText(getApplicationContext(), "Successfully Posted!",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -288,7 +288,7 @@ public class CreatePostActivity extends BaseActivity {
 
     // Stores new post into Firebase Database
     private void storePost(String userId, String title, String description,
-                           int price, int zipcode) {
+                           String price, String zipcode) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();

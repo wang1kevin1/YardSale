@@ -26,15 +26,15 @@ public class PostUtil {
         String sPrice = (database.child("posts").child(postID).child("price").getKey());
         String sPostalCode = (database.child("posts").child(postID).child("zipcode").getKey());
 
-        int price = -1, postalCode = -1;
+        String price = "-1", postalCode = "-1";
 
         if(sPrice != null) {
-            price = Integer.parseInt(sPrice);
+            price = sPrice;
             throw new PostReadException(postID + " is not a valid post ID");
         }
 
         if(sPostalCode != null) {
-            postalCode = Integer.parseInt(sPostalCode);
+            postalCode = sPostalCode;
             throw new PostReadException(postID + " is not a valid post ID");
         }
 

@@ -11,14 +11,14 @@ import android.widget.TextView;
 import com.YardSale.R;
 import com.YardSale.models.Post;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAdapter.PostCardViewHolder> {
 
-    private List<Post> postList;
+    private ArrayList<Post> postList;
     Context context;
 
-    public MyPostRecyclerAdapter(List<Post> postList, Context context) {
+    public MyPostRecyclerAdapter(ArrayList<Post> postList, Context context) {
         this.postList = postList;
         this.context = context;
     }
@@ -47,13 +47,19 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
     }
 
     @Override
-    public void onBindViewHolder(PostCardViewHolder holder, int position) {
+    public void onBindViewHolder(PostCardViewHolder holder, final int position) {
         Post mypost = postList.get(position);
-        holder.vTitle.setText(mypost.TITLE);
-        holder.vPrice.setText(mypost.PRICE);
-        holder.vLocation.setText(mypost.POSTAL_CODE);
+        holder.vTitle.setText(mypost.getTITLE());
+        holder.vPrice.setText(mypost.getPRICE());
+        holder.vLocation.setText(mypost.getPOSTAL_CODE());
     }
 
     @Override
-    public int getItemCount() {return postList.size(); }
+    public int getItemCount() {
+        if (postList == null) {
+            return 0;
+        } else {
+            return postList.size();
+        }
+    }
 }

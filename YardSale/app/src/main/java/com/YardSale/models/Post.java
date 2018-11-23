@@ -8,24 +8,45 @@ import java.util.Map;
 
 @IgnoreExtraProperties
 public class Post {
-    public String UID;
-    public String TITLE;
-    public String DESCRIPTION;
-    public int PRICE;
-    public int POSTAL_CODE;
+    private String UID;
+    private String TITLE;
+    private String DESCRIPTION;
+    private String PRICE;
+    private String POSTAL_CODE;
 
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String title, String description, int price, int postalCode) {
+    public Post(String uid, String title, String description, String price, String postalCode) {
         this.UID = uid;
         this.TITLE = title;
         this.DESCRIPTION = description;
         this.PRICE = price;
         this.POSTAL_CODE = postalCode;
     }
+
+    public String getUID() {
+        return UID;
+    }
+    public void setUID(String uid) {this.UID = uid; }
+    public String getTITLE() {
+        return TITLE;
+    }
+    public void setTITLE(String title) {this.TITLE = title; }
+    public String getDESCRIPTION() {
+        return DESCRIPTION;
+    }
+    public void setDESCRIPTION(String desc) {this.DESCRIPTION = desc; }
+    public String getPRICE() {
+        return PRICE;
+    }
+    public void setPRICE(String price) {this.PRICE = price; }
+    public String getPOSTAL_CODE() {
+        return POSTAL_CODE;
+    }
+    public void setPOSTAL_CODE(String zipcode) {this.POSTAL_CODE = zipcode; }
 
     @Exclude
     public Map<String, Object> toMap() {
