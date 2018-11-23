@@ -16,7 +16,8 @@
         android:hint="@string/posttitle"
         android:importantForAutofill="no"
         android:inputType="textCapCharacters"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:maxLength="40"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
