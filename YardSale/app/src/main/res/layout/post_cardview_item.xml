@@ -32,7 +32,8 @@
             android:layout_below="@id/txtTitle"
             android:adjustViewBounds="true"
             android:paddingRight="2dp"
-            android:paddingLeft="2dp"/>
+            android:paddingLeft="2dp"
+            android:src="@drawable/ic_attach_image_24dp"/>
 
         <LinearLayout
             android:id="@+id/details"
