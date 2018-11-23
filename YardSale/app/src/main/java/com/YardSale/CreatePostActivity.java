@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.YardSale.adapters.CreatePostRecyclerAdapter;
@@ -49,10 +48,10 @@ public class CreatePostActivity extends BaseActivity {
     ArrayList<Uri> mArrayUri;
     Uri mImageUri;
 
+
     //Image display
     CreatePostRecyclerAdapter imageAdapter;
     RecyclerView imageRecyclerView;
-    ImageView singleView;
 
     //Initialize EditText input items
     EditText mPostTitle, mPostPrice, mPostZipcode, mPostDesc;
@@ -78,7 +77,6 @@ public class CreatePostActivity extends BaseActivity {
 
         //get image recycler view stuff
         imageRecyclerView = (RecyclerView) findViewById(R.id.horizontal_recycler_view);
-        singleView = (ImageView) findViewById(R.id.singleView);
 
         //Get Firebase Refs
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -119,7 +117,6 @@ public class CreatePostActivity extends BaseActivity {
                     imagesEncodedList = new ArrayList<>();
                     mArrayUri = new ArrayList<>();
                     mArrayUri.clear();
-                    singleView.setImageURI(null);
 
                 if (data.getData() != null) { //on Single image selected
                     mImageUri = data.getData();
@@ -132,49 +129,40 @@ public class CreatePostActivity extends BaseActivity {
                     imageEncoded = cursor.getString(columnIndex);
                     cursor.close();
 
+                    mArrayUri.add(mImageUri);
                     Log.v("CreatePostActivity", "Selected Images: 1");
-                    singleView.setImageURI(mImageUri);
+                } else { //on Multiple image selected
+                    if(data.getClipData() != null) {
+                        ClipData mClipData = data.getClipData();
 
-                    // fill in recycler view with images
-                    imageAdapter = new CreatePostRecyclerAdapter(mArrayUri, getApplication());
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
 
-                    LinearLayoutManager hLayoutManager =
-                            new LinearLayoutManager(CreatePostActivity.this,
-                                    LinearLayoutManager.HORIZONTAL, false);
-                    imageRecyclerView.setLayoutManager(hLayoutManager);
-                    imageRecyclerView.setAdapter(imageAdapter);
-                    } else { //on Multiple image selected
-                        if(data.getClipData() != null) {
-                            ClipData mClipData = data.getClipData();
+                            ClipData.Item item = mClipData.getItemAt(i);
+                            Uri uri = item.getUri();
+                            mArrayUri.add(uri);
+                            // Get the cursor
+                            Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                            // Move to first row
+                            cursor.moveToFirst();
 
-                            for (int i = 0; i < mClipData.getItemCount(); i++) {
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            imageEncoded = cursor.getString(columnIndex);
+                            imagesEncodedList.add(imageEncoded);
+                            cursor.close();
 
-                                ClipData.Item item = mClipData.getItemAt(i);
-                                Uri uri = item.getUri();
-                                mArrayUri.add(uri);
-                                // Get the cursor
-                                Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
-                                // Move to first row
-                                cursor.moveToFirst();
-
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                imageEncoded = cursor.getString(columnIndex);
-                                imagesEncodedList.add(imageEncoded);
-                                cursor.close();
-
-                            }
-                            Log.v("CreatePostActivity", "Selected Images " + mArrayUri.size());
-
-                            // fill in recycler view with images
-                            imageAdapter = new CreatePostRecyclerAdapter(mArrayUri, getApplication());
-
-                            LinearLayoutManager hLayoutManager =
-                                    new LinearLayoutManager(CreatePostActivity.this,
-                                            LinearLayoutManager.HORIZONTAL, false);
-                            imageRecyclerView.setLayoutManager(hLayoutManager);
-                            imageRecyclerView.setAdapter(imageAdapter);
                         }
+                        Log.v("CreatePostActivity", "Selected Images " + mArrayUri.size());
+
+                    }
                 }
+                // fill in recycler view with images
+                imageAdapter = new CreatePostRecyclerAdapter(mArrayUri, getApplication());
+
+                LinearLayoutManager hLayoutManager =
+                        new LinearLayoutManager(CreatePostActivity.this,
+                                LinearLayoutManager.HORIZONTAL, false);
+                imageRecyclerView.setLayoutManager(hLayoutManager);
+                imageRecyclerView.setAdapter(imageAdapter);
             } else {
                 Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
             }
