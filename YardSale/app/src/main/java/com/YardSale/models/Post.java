@@ -12,7 +12,7 @@ public class Post {
     private String TITLE;
     private String DESCRIPTION;
     private String PRICE;
-    private String POSTAL_CODE;
+    private String ZIPCODE;
 
 
     public Post() {
@@ -24,7 +24,7 @@ public class Post {
         this.TITLE = title;
         this.DESCRIPTION = description;
         this.PRICE = price;
-        this.POSTAL_CODE = postalCode;
+        this.ZIPCODE = postalCode;
     }
 
     public String getUID() {
@@ -43,10 +43,10 @@ public class Post {
         return PRICE;
     }
     public void setPRICE(String price) {this.PRICE = price; }
-    public String getPOSTAL_CODE() {
-        return POSTAL_CODE;
+    public String getZIPCODE() {
+        return ZIPCODE;
     }
-    public void setPOSTAL_CODE(String zipcode) {this.POSTAL_CODE = zipcode; }
+    public void setZIPCODE(String zipcode) {this.ZIPCODE = zipcode; }
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -55,7 +55,7 @@ public class Post {
         result.put("title", TITLE);
         result.put("description", DESCRIPTION);
         result.put("price", PRICE);
-        result.put("zipcode", POSTAL_CODE);
+        result.put("zipcode", ZIPCODE);
 
         return result;
     }

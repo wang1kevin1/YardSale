@@ -28,6 +28,7 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
         ImageView vImage;
         TextView vPrice;
         TextView vLocation;
+        TextView vDescription;
 
         public PostCardViewHolder(View view) {
             super(view);
@@ -35,6 +36,7 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
             vImage =  (ImageView) view.findViewById(R.id.cardImage);
             vPrice = (TextView)  view.findViewById(R.id.txtPrice);
             vLocation = (TextView)  view.findViewById(R.id.txtLocation);
+            vDescription = (TextView) view.findViewById(R.id.txtDescription);
         }
     }
 
@@ -51,7 +53,8 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
         Post mypost = postList.get(position);
         holder.vTitle.setText(mypost.getTITLE());
         holder.vPrice.setText(mypost.getPRICE());
-        holder.vLocation.setText(mypost.getPOSTAL_CODE());
+        holder.vLocation.setText(mypost.getZIPCODE());
+        holder.vDescription.setText(mypost.getDESCRIPTION());
     }
 
     @Override

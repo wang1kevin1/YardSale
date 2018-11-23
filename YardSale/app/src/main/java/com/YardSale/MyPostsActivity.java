@@ -47,8 +47,6 @@ public class MyPostsActivity extends BaseActivity {
 
         //Recycler view cardview list
         postRecyclerView = (RecyclerView) findViewById(R.id.vertical_recycler_view);
-        mArrayUri = new ArrayList<>();
-        mPostData = new ArrayList<>();
 
         //Create post button
         FloatingActionButton FormButton = findViewById(R.id.FormButton);
@@ -64,10 +62,15 @@ public class MyPostsActivity extends BaseActivity {
         mDatabase.child("user-posts").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mPostData = new ArrayList<>();
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
                     Post aPost = postSnapshot.getValue(Post.class);
                     mPostData.add(aPost);
-                    Log.v("posttitle", "post title:");
+
+                    String postKey = postSnapshot.getKey();
+
+                    Log.v("myPost", "post image:" +
+                            mStorage.child("post-images").child(postKey));
                 }
                 cardAdapter = new MyPostRecyclerAdapter(mPostData, getApplication());
 
