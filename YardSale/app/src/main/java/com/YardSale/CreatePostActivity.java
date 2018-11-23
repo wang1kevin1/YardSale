@@ -60,6 +60,7 @@ public class CreatePostActivity extends BaseActivity {
     DatabaseReference mDatabase;
     // Server time stamp
     String mTimestamp;
+    String key;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,10 +114,10 @@ public class CreatePostActivity extends BaseActivity {
             if(requestCode == GALLERY_REQUEST_CODE &&
                     resultCode == RESULT_OK &&
                     data != null ) {
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    imagesEncodedList = new ArrayList<>();
-                    mArrayUri = new ArrayList<>();
-                    mArrayUri.clear();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                imagesEncodedList = new ArrayList<>();
+                mArrayUri = new ArrayList<>();
+                mArrayUri.clear();
 
                 if (data.getData() != null) { //on Single image selected
                     mImageUri = data.getData();
@@ -209,6 +210,9 @@ public class CreatePostActivity extends BaseActivity {
 
         Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
 
+        // get post identification key
+        key = mDatabase.child("posts").push().getKey();
+
         // adds post to firebase database
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -246,20 +250,13 @@ public class CreatePostActivity extends BaseActivity {
                     }
                 });
 
-        // get post identification key
-        String key = mDatabase.child("posts").push().getKey();
-
         StorageReference imageRef = mStorage.child("post-images").child(key);
         int upload = 0;
 
-        if(mArrayUri == null) {
-            imageRef.child(Integer.toString(upload)).putFile(mImageUri);
-        } else {
-            while (upload < mArrayUri.size()) {
-                if(mArrayUri.get(upload) != null) {
-                    imageRef.child(Integer.toString(upload)).putFile(mArrayUri.get(upload));
-                    upload++;
-                }
+        while (upload < mArrayUri.size()) {
+            if(mArrayUri.get(upload) != null) {
+                imageRef.child(Integer.toString(upload)).putFile(mArrayUri.get(upload));
+                upload++;
             }
         }
     }
@@ -279,7 +276,6 @@ public class CreatePostActivity extends BaseActivity {
                            String price, String zipcode) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
-        String key = mDatabase.child("posts").push().getKey();
         Post post = new Post(userId, title, description, price, zipcode);
         Map<String, Object> postValues = post.toMap();
 
