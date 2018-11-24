@@ -46,6 +46,7 @@ public class CreatePostActivity extends BaseActivity {
     String imageEncoded;
     List<String> imagesEncodedList;
     ArrayList<Uri> mArrayUri;
+    List<String> mImageIndex;
     Uri mImageUri;
 
 
@@ -252,13 +253,16 @@ public class CreatePostActivity extends BaseActivity {
 
         StorageReference imageRef = mStorage.child("post-images").child(key);
         int upload = 0;
+        mImageIndex = new ArrayList<String>();
 
         while (upload < mArrayUri.size()) {
             if(mArrayUri.get(upload) != null) {
                 imageRef.child(Integer.toString(upload)).putFile(mArrayUri.get(upload));
+                mImageIndex.add(Integer.toString(upload));
                 upload++;
             }
         }
+        mDatabase.child("post-images").child(key).setValue(mImageIndex);
     }
 
     // disables editing to prevent multiple posts on button spam
