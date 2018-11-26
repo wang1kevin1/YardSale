@@ -6,15 +6,23 @@
     android:id="@+id/CreateAPost"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="3"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical"
-    android:gravity="center"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true" >
+
+    <Button
+        android:id="@+id/MenuPostButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/my_posts"
+        android:textSize="40sp"
+        android:clickable="true"
+        android:onClick="goToPosts" />
 
     <android.support.v7.widget.SearchView
         android:id="@+id/search"
@@ -22,44 +30,12 @@
         android:layout_height="wrap_content"
         app:queryHint="@string/search_hint"
         app:iconifiedByDefault="false"
-        android:windowSoftInputMode="stateHidden" />
+        android:windowSoftInputMode="stateHidden"
+        android:layout_gravity="top"/>
 
-    <TextView
-        android:id="@+id/text_view_id"
-        android:layout_width="167dp"
-        android:layout_height="64dp"
-        android:layout_gravity="center_horizontal" />
-
-
-    <Button
-        android:id="@+id/MenuBrowseButton"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/vertical_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/browse_posts"
-        android:textSize="40sp"
-        android:clickable="true"
-        android:onClick="goToBrowse" />
-    <Button
-        android:id="@+id/MenuPostButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/my_posts"
-        android:textSize="40sp"
-        android:clickable="true"
-        android:onClick="goToPosts" />
-    <Button
-        android:id="@+id/MenuAccountButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/account_settings"
-        android:textSize="40sp"
-        android:clickable="true"
-        android:onClick="goToAccount" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
