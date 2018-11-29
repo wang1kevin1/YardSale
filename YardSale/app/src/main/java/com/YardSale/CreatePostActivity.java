@@ -214,8 +214,22 @@ public class CreatePostActivity extends BaseActivity {
         // get post identification key
         key = mDatabase.child("posts").push().getKey();
 
+        // upload post images to firebase storage
+        StorageReference imageRef = mStorage.child("post-images").child(key);
+        int upload = 0;
+        mImageIndex = new ArrayList<String>();
+
+        while (upload < mArrayUri.size()) {
+            if(mArrayUri.get(upload) != null) {
+                imageRef.child(Integer.toString(upload)).putFile(mArrayUri.get(upload));
+                mImageIndex.add(Integer.toString(upload));
+                upload++;
+            }
+        }
+        mDatabase.child("post-images").child(key).setValue(mImageIndex);
+
         // adds post to firebase database
-        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+        mDatabase.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -250,19 +264,6 @@ public class CreatePostActivity extends BaseActivity {
                         setEditingEnabled(true);
                     }
                 });
-
-        StorageReference imageRef = mStorage.child("post-images").child(key);
-        int upload = 0;
-        mImageIndex = new ArrayList<String>();
-
-        while (upload < mArrayUri.size()) {
-            if(mArrayUri.get(upload) != null) {
-                imageRef.child(Integer.toString(upload)).putFile(mArrayUri.get(upload));
-                mImageIndex.add(Integer.toString(upload));
-                upload++;
-            }
-        }
-        mDatabase.child("post-images").child(key).setValue(mImageIndex);
     }
 
     // disables editing to prevent multiple posts on button spam
