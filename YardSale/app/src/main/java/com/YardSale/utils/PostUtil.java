@@ -4,6 +4,8 @@ import com.YardSale.models.Post;
 import com.YardSale.models.PostReadException;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
+
 public class PostUtil {
 
 
@@ -20,7 +22,7 @@ public class PostUtil {
         String uid = database.child("posts").child(postID).child("uid").getKey();
         String title = database.child("posts").child(postID).child("title").getKey();
         String description = database.child("posts").child(postID).child("description").getKey();
-        String url = database.child("posts").child(postID).child("url").getKey();
+        ArrayList<String> imageList = new ArrayList<>();
 
         // Must be non null strings to convert to int
         String sPrice = (database.child("posts").child(postID).child("price").getKey());
@@ -38,7 +40,7 @@ public class PostUtil {
             throw new PostReadException(postID + " is not a valid post ID");
         }
 
-        return new Post(uid, title, description, price, postalCode);
+        return new Post(uid, title, description, price, postalCode, imageList);
     }
 
 }
