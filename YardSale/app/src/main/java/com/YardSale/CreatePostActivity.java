@@ -224,16 +224,11 @@ public class CreatePostActivity extends BaseActivity {
         while (upload < mArrayUri.size()) {
             if(mArrayUri.get(upload) != null) {
                 imageRef.child(Integer.toString(upload)).putFile(mArrayUri.get(upload));
-                mImageIndex.add(Integer.toString(upload));
+                imageList.add(Integer.toString(upload));
                 upload++;
             }
         }
         mDatabase.child("post-images").child(key).setValue(mImageIndex);
-
-        imageList.add("url1");
-        imageList.add("url2");
-        imageList.add("url3");
-        imageList.add("url4");
 
         // adds post to firebase database
         mDatabase.addListenerForSingleValueEvent(
