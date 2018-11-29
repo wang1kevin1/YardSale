@@ -1,5 +1,7 @@
 package com.YardSale.models;
 
+import android.net.Uri;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -14,7 +16,7 @@ public class Post {
     private String DESCRIPTION;
     private String PRICE;
     private String ZIPCODE;
-    private ArrayList<String> IMAGELIST;
+    private ArrayList<Uri> IMAGELIST;
 
 
     public Post() {
@@ -22,7 +24,7 @@ public class Post {
     }
 
     public Post(String uid, String title, String description,
-                String price, String postalCode, ArrayList<String> imageList) {
+                String price, String postalCode, ArrayList<Uri> imageList) {
         this.UID = uid;
         this.TITLE = title;
         this.DESCRIPTION = description;
@@ -51,10 +53,10 @@ public class Post {
         return ZIPCODE;
     }
     public void setZIPCODE(String zipcode) {this.ZIPCODE = zipcode; }
-    public ArrayList<String> getIMAGELIST() {
+    public ArrayList<Uri> getIMAGELIST() {
         return IMAGELIST;
     }
-    public void setIMAGELIST(ArrayList<String> imageList) {this.IMAGELIST = imageList; }
+    public void setIMAGELIST(ArrayList<Uri> imageList) {this.IMAGELIST = imageList; }
 
     @Exclude
     public Map<String, Object> toMap() {

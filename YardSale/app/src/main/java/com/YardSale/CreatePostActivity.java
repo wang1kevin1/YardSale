@@ -18,11 +18,13 @@ import android.widget.Toast;
 
 import com.YardSale.adapters.CreatePostRecyclerAdapter;
 import com.YardSale.models.Post;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +44,7 @@ public class CreatePostActivity extends BaseActivity {
     String imageEncoded;
     List<String> imagesEncodedList;
     ArrayList<Uri> mArrayUri;
-    ArrayList<String> imageList;
+    ArrayList<Uri> imageList;
     Uri mImageUri;
 
 
@@ -211,14 +213,31 @@ public class CreatePostActivity extends BaseActivity {
         key = mDatabase.child("posts").push().getKey();
 
         // upload post images to firebase storage
-        StorageReference imageRef = mStorage.child("post-images").child(key);
+
         int upload = 0;
         imageList = new ArrayList<>();
 
         while (upload < mArrayUri.size()) {
+            final StorageReference imageRef =
+                    mStorage.child("post-images")
+                            .child(key)
+                            .child(Integer.toString(upload));
             if(mArrayUri.get(upload) != null) {
-                imageRef.child(Integer.toString(upload)).putFile(mArrayUri.get(upload));
-                imageList.add(Integer.toString(upload));
+                imageRef.putFile(mArrayUri.get(upload)).
+                        addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        // Download file From Firebase Storage
+                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri downloadPhotoUrl) {
+                                Log.v(TAG, "downloadPhotoUrl: " + downloadPhotoUrl);
+                                imageList.add(downloadPhotoUrl);
+                            }
+                        });
+                    }
+                });
                 upload++;
             }
         }
@@ -244,7 +263,7 @@ public class CreatePostActivity extends BaseActivity {
 
     // Stores new post into Firebase Database
     private void storePost(String userId, String title, String description,
-                           String price, String zipcode, ArrayList<String> imageList) {
+                           String price, String zipcode, ArrayList<Uri> imageList) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         Post post = new Post(userId, title, description, price, zipcode, imageList);

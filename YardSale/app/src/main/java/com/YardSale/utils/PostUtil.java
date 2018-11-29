@@ -1,5 +1,7 @@
 package com.YardSale.utils;
 
+import android.net.Uri;
+
 import com.YardSale.models.Post;
 import com.YardSale.models.PostReadException;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +24,7 @@ public class PostUtil {
         String uid = database.child("posts").child(postID).child("uid").getKey();
         String title = database.child("posts").child(postID).child("title").getKey();
         String description = database.child("posts").child(postID).child("description").getKey();
-        ArrayList<String> imageList = new ArrayList<>();
+        ArrayList<Uri> imageList = new ArrayList<>();
 
         // Must be non null strings to convert to int
         String sPrice = (database.child("posts").child(postID).child("price").getKey());
