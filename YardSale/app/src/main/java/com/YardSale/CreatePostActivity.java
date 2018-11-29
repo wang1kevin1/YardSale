@@ -18,13 +18,9 @@ import android.widget.Toast;
 
 import com.YardSale.adapters.CreatePostRecyclerAdapter;
 import com.YardSale.models.Post;
-import com.YardSale.models.User;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -46,7 +42,6 @@ public class CreatePostActivity extends BaseActivity {
     String imageEncoded;
     List<String> imagesEncodedList;
     ArrayList<Uri> mArrayUri;
-    List<String> mImageIndex;
     ArrayList<String> imageList;
     Uri mImageUri;
 
@@ -218,7 +213,6 @@ public class CreatePostActivity extends BaseActivity {
         // upload post images to firebase storage
         StorageReference imageRef = mStorage.child("post-images").child(key);
         int upload = 0;
-        mImageIndex = new ArrayList<>();
         imageList = new ArrayList<>();
 
         while (upload < mArrayUri.size()) {
@@ -228,45 +222,14 @@ public class CreatePostActivity extends BaseActivity {
                 upload++;
             }
         }
-        mDatabase.child("post-images").child(key).setValue(mImageIndex);
 
         // adds post to firebase database
-        mDatabase.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user value
-                        User user = dataSnapshot.getValue(User.class);
-
-                        if (user == null) {
-                            // User is null, error out
-                            Log.e(TAG, "User " + userId + " is unexpectedly null");
-                            Toast.makeText(CreatePostActivity.this,
-                                    "Error: could not fetch user.",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            // sends new post to firebase
-                            storePost(userId,
-                                    title,
-                                    description,
-                                    price,
-                                    zipcode,
-                                    imageList);
-                            Toast.makeText(getApplicationContext(), "Successfully Posted!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // Finish this Activity, back to the stream
-                        setEditingEnabled(true);
-                        finish();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        setEditingEnabled(true);
-                    }
-                });
+        storePost(userId, title, description, price, zipcode, imageList);
+        Toast.makeText(getApplicationContext(),
+                "Successfully Posted!",
+                Toast.LENGTH_SHORT).show();
+        setEditingEnabled(true);
+        finish();
     }
 
     // disables editing to prevent multiple posts on button spam
