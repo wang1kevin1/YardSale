@@ -213,18 +213,23 @@ public class CreatePostActivity extends BaseActivity {
         key = mDatabase.child("posts").push().getKey();
 
         // upload post images to firebase storage
-
         int upload = 0;
         mImageIndex = new ArrayList<>();
 
         while (upload < mArrayUri.size()) {
-            final StorageReference imageRef =
-                    mStorage.child("post-images")
-                            .child(key)
-                            .child(Integer.toString(upload));
             if(mArrayUri.get(upload) != null) {
-                imageRef.putFile(mArrayUri.get(upload)).
-                        addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                mImageIndex.add(Integer.toString(upload));
+                upload++;
+            }
+        }
+        mDatabase.child("post-images").child(key).setValue(mImageIndex);
+
+        final StorageReference imageRef =
+                mStorage.child("post-images")
+                        .child(key);
+        //first image added only
+        imageRef.putFile(mArrayUri.get(0)).
+                addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
@@ -233,23 +238,24 @@ public class CreatePostActivity extends BaseActivity {
                             @Override
                             public void onSuccess(Uri downloadPhotoUrl) {
                                 Log.v(TAG, "downloadPhotoUrl: " + downloadPhotoUrl);
+
+                                // adds post to firebase database
+                                storePost(userId,
+                                        title,
+                                        description,
+                                        price,
+                                        zipcode,
+                                        downloadPhotoUrl.toString());
+                                Toast.makeText(getApplicationContext(),
+                                        "Successfully Posted!",
+                                        Toast.LENGTH_SHORT).show();
+                                setEditingEnabled(true);
+                                finish();
                             }
                         });
                     }
                 });
-                mImageIndex.add(Integer.toString(upload));
-                upload++;
-            }
-        }
-        mDatabase.child("post-images").child(key).setValue(mImageIndex);
 
-        // adds post to firebase database
-        storePost(userId, title, description, price, zipcode);
-        Toast.makeText(getApplicationContext(),
-                "Successfully Posted!",
-                Toast.LENGTH_SHORT).show();
-        setEditingEnabled(true);
-        finish();
     }
 
     // disables editing to prevent multiple posts on button spam
@@ -264,10 +270,10 @@ public class CreatePostActivity extends BaseActivity {
 
     // Stores new post into Firebase Database
     private void storePost(String userId, String title, String description,
-                           String price, String zipcode) {
+                           String price, String zipcode, String url) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
-        Post post = new Post(userId, title, description, price, zipcode);
+        Post post = new Post(userId, title, description, price, zipcode, url);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

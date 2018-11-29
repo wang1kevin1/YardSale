@@ -13,18 +13,20 @@ public class Post {
     private String DESCRIPTION;
     private String PRICE;
     private String ZIPCODE;
+    private String URL;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
     public Post(String uid, String title, String description,
-                String price, String postalCode) {
+                String price, String postalCode, String url) {
         this.UID = uid;
         this.TITLE = title;
         this.DESCRIPTION = description;
         this.PRICE = price;
         this.ZIPCODE = postalCode;
+        this.URL = url;
     }
 
     public String getUID() {
@@ -47,6 +49,10 @@ public class Post {
         return ZIPCODE;
     }
     public void setZIPCODE(String zipcode) {this.ZIPCODE = zipcode; }
+    public String getURL() {
+        return URL;
+    }
+    public void setURL(String url) {this.URL = url; }
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -56,6 +62,7 @@ public class Post {
         result.put("description", DESCRIPTION);
         result.put("price", PRICE);
         result.put("zipcode", ZIPCODE);
+        result.put("url", URL);
 
         return result;
     }
