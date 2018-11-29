@@ -44,7 +44,7 @@ public class CreatePostActivity extends BaseActivity {
     String imageEncoded;
     List<String> imagesEncodedList;
     ArrayList<Uri> mArrayUri;
-    ArrayList<Uri> imageList;
+    ArrayList<String> mImageIndex;
     Uri mImageUri;
 
 
@@ -215,7 +215,7 @@ public class CreatePostActivity extends BaseActivity {
         // upload post images to firebase storage
 
         int upload = 0;
-        imageList = new ArrayList<>();
+        mImageIndex = new ArrayList<>();
 
         while (upload < mArrayUri.size()) {
             final StorageReference imageRef =
@@ -233,17 +233,18 @@ public class CreatePostActivity extends BaseActivity {
                             @Override
                             public void onSuccess(Uri downloadPhotoUrl) {
                                 Log.v(TAG, "downloadPhotoUrl: " + downloadPhotoUrl);
-                                imageList.add(downloadPhotoUrl);
                             }
                         });
                     }
                 });
+                mImageIndex.add(Integer.toString(upload));
                 upload++;
             }
         }
+        mDatabase.child("post-images").child(key).setValue(mImageIndex);
 
         // adds post to firebase database
-        storePost(userId, title, description, price, zipcode, imageList);
+        storePost(userId, title, description, price, zipcode);
         Toast.makeText(getApplicationContext(),
                 "Successfully Posted!",
                 Toast.LENGTH_SHORT).show();
@@ -263,10 +264,10 @@ public class CreatePostActivity extends BaseActivity {
 
     // Stores new post into Firebase Database
     private void storePost(String userId, String title, String description,
-                           String price, String zipcode, ArrayList<Uri> imageList) {
+                           String price, String zipcode) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
-        Post post = new Post(userId, title, description, price, zipcode, imageList);
+        Post post = new Post(userId, title, description, price, zipcode);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

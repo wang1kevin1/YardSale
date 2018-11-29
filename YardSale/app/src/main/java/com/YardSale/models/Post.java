@@ -1,11 +1,8 @@
 package com.YardSale.models;
 
-import android.net.Uri;
-
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,21 +13,18 @@ public class Post {
     private String DESCRIPTION;
     private String PRICE;
     private String ZIPCODE;
-    private ArrayList<Uri> IMAGELIST;
-
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
     public Post(String uid, String title, String description,
-                String price, String postalCode, ArrayList<Uri> imageList) {
+                String price, String postalCode) {
         this.UID = uid;
         this.TITLE = title;
         this.DESCRIPTION = description;
         this.PRICE = price;
         this.ZIPCODE = postalCode;
-        this.IMAGELIST = imageList;
     }
 
     public String getUID() {
@@ -53,10 +47,6 @@ public class Post {
         return ZIPCODE;
     }
     public void setZIPCODE(String zipcode) {this.ZIPCODE = zipcode; }
-    public ArrayList<Uri> getIMAGELIST() {
-        return IMAGELIST;
-    }
-    public void setIMAGELIST(ArrayList<Uri> imageList) {this.IMAGELIST = imageList; }
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -66,7 +56,6 @@ public class Post {
         result.put("description", DESCRIPTION);
         result.put("price", PRICE);
         result.put("zipcode", ZIPCODE);
-        result.put("imageList", IMAGELIST);
 
         return result;
     }
