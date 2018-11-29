@@ -2,9 +2,9 @@
 <android.support.design.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".AccountSettingsActivity"
     android:background="@drawable/gradient2">
 
     <ProgressBar
@@ -72,8 +72,8 @@
                 android:layout_alignStart="@+id/editTextEmail"
                 android:layout_marginBottom="-175dp"
                 android:text="@string/prompt_email"
-                android:textSize="15sp"
                 android:textColor="@color/colorBlack"
+                android:textSize="15sp"
                 android:visibility="visible" />
 
 
@@ -81,13 +81,13 @@
                 android:id="@+id/textViewPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/editTextEmail"
                 android:layout_below="@+id/editTextEmail"
+                android:layout_alignStart="@+id/editTextEmail"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
-                android:textSize="15sp"
                 android:text="@string/prompt_password"
                 android:textColor="@color/colorBlack"
+                android:textSize="15sp"
                 android:visibility="visible" />
 
             <TextView
@@ -109,8 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="75dp"
-                android:layout_marginTop="108dp"
+                android:layout_marginStart="94dp"
+                android:layout_marginTop="61dp"
                 android:text="@string/account_settings"
                 android:textAlignment="center"
                 android:textColor="@color/colorBlack"
@@ -123,8 +123,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="139dp"
-                android:layout_marginTop="382dp"
+                android:layout_marginStart="118dp"
+                android:layout_marginTop="381dp"
                 android:layout_marginBottom="2dp"
                 android:layout_toEndOf="@+id/textViewPostalCode"
                 android:text="@string/prompt_update_settings" />
