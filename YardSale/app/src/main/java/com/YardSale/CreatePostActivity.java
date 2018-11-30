@@ -1,7 +1,6 @@
 package com.YardSale;
 
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -132,7 +131,7 @@ public class CreatePostActivity extends BaseActivity {
                     mArrayUri.add(mImageUri);
                     Log.v("CreatePostActivity", "Selected Images: 1");
                 } else { //on Multiple image selected
-                    if(data.getClipData() != null) {
+                    /* if(data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
 
                         for (int i = 0; i < mClipData.getItemCount(); i++) {
@@ -153,7 +152,8 @@ public class CreatePostActivity extends BaseActivity {
                         }
                         Log.v("CreatePostActivity", "Selected Images " + mArrayUri.size());
 
-                    }
+                    } */
+                    Toast.makeText(this, "Choose 1 image", Toast.LENGTH_LONG).show();
                 }
                 // fill in recycler view with images
                 imageAdapter = new CreatePostRecyclerAdapter(mArrayUri, getApplication());
