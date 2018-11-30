@@ -1,12 +1,10 @@
 package com.YardSale;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 
 import com.YardSale.adapters.MyPostRecyclerAdapter;
 import com.YardSale.models.Post;
@@ -75,12 +73,4 @@ public class MainSearchActivity extends BaseActivity {
             }
         });
     }
-
-    // On button click goes to MyPostsActivity
-    public void goToPosts(View v) {
-        Intent myIntent = new Intent(MainSearchActivity.this,
-                MyPostsActivity.class);
-        startActivity(myIntent);
-    }
-
 }

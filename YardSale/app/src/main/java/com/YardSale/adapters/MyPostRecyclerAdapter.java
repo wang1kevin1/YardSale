@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.YardSale.R;
 import com.YardSale.models.Post;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -55,6 +56,7 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
         holder.vPrice.setText(mypost.getPRICE());
         holder.vLocation.setText(mypost.getZIPCODE());
         holder.vDescription.setText(mypost.getDESCRIPTION());
+        Glide.with(context).load(mypost.getURL()).into(holder.vImage);
     }
 
     @Override

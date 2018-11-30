@@ -15,7 +15,7 @@
     <string name="postcreate">CREATE</string>
 
     <!-- My Posts String Resources -->
-    <string name="my_posts_title">My Posts (debug button)</string>
+    <string name="my_posts_title">My Posts</string>
 
     <!-- Login/Create Account Activity -->
     <string name="login">Sign In</string>
@@ -33,8 +33,15 @@
     <!-- Search String Resources -->
     <string name="search_title">Listings</string>
     <string name="search_hint">Search</string>
-    
+
     <!-- Account Settings Resources -->
     <string name="prompt_update_settings">Update Settings</string>
     <string name="account_settings">Account Settings</string>
+    <string name="title_activity_navigation">YardSale</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 </resources>

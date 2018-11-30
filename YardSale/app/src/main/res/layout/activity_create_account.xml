@@ -1,152 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient2">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
 
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
-    <ScrollView
-        android:id="@+id/login_form"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp">
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-        <android.support.design.circularreveal.CircularRevealRelativeLayout
-            android:id="@+id/email_login_form"
+        <ImageView android:src="@drawable/yardsale_transparent_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="center_horizontal" />
+
+
+
+        <!-- Email Label -->
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="495dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/YardsaleLogo"
-                android:layout_width="130dp"
-                android:layout_height="125dp"
-                android:layout_marginLeft="125dp"
-                android:layout_marginTop="46dp"
-                app:srcCompat="@drawable/yardsale_transparent_logo" />
-
-            <EditText
-                android:id="@+id/editTextEmail"
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="89dp"
-                android:layout_marginTop="175dp"
-                android:ems="10"
-                android:hint="@string/hint_email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:hint="Email" />
+        </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/editTextPostalCode"
-                android:layout_width="wrap_content"
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="89dp"
-                android:layout_marginTop="395dp"
-                android:ems="10"
-                android:hint="@string/hint_postal_code"
-                android:inputType="textPostalAddress" />
+                android:inputType="textPassword"
+                android:hint="Password"/>
+        </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/editTextPassword"
-                android:layout_width="wrap_content"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/editTextConfirmPassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/editTextEmail"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="250dp"
-                android:ems="10"
-                android:hint="@string/hint_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:hint="Confirm Password"/>
+        </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/buttonCreateAccount"
-                android:layout_width="wrap_content"
+        <!--  Post code  Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/editTextPostalCode"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="161dp"
-                android:layout_marginBottom="0dp"
-                android:text="@string/create_account" />
+                android:inputType="textPostalAddress"
+                android:hint="Postal Code" />
+        </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:id="@+id/textViewEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/editTextEmail"
-                android:layout_alignStart="@+id/editTextEmail"
-                android:layout_marginBottom="-175dp"
-                android:text="@string/prompt_email"
-                android:textSize="15sp"
-                android:textColor="@color/colorBlack"
-                android:visibility="visible" />
+        <!-- Signup Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/buttonCreateAccount"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="Create Account"/>
 
-
-            <TextView
-                android:id="@+id/textViewPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/editTextEmail"
-                android:layout_alignStart="@+id/editTextEmail"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="8dp"
-                android:textSize="15sp"
-                android:text="@string/prompt_password"
-                android:textColor="@color/colorBlack"
-                android:visibility="visible" />
-
-            <EditText
-                android:id="@+id/editTextConfirmPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="89dp"
-                android:layout_marginTop="325dp"
-                android:ems="10"
-                android:hint="@string/hint_confirm_password"
-                android:inputType="textPassword" />
-
-            <TextView
-                android:id="@+id/textViewConfirmPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/editTextConfirmPassword"
-                android:layout_alignStart="@+id/editTextEmail"
-                android:layout_marginBottom="-325dp"
-                android:textColor="@color/colorBlack"
-                android:textSize="15sp"
-                android:visibility="visible"
-                android:text="@string/prompt_confirm_password" />
-
-            <TextView
-                android:id="@+id/textViewZipCode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/editTextConfirmPassword"
-                android:layout_alignStart="@+id/editTextEmail"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="3dp"
-                android:textSize="15sp"
-                android:text="@string/prompt_postal_code"
-                android:textColor="@color/colorBlack"
-                android:visibility="visible" />
-
-        </android.support.design.circularreveal.CircularRevealRelativeLayout>
-    </ScrollView>
-
-</android.support.design.circularreveal.CircularRevealRelativeLayout>
+    </LinearLayout>
+</ScrollView>
