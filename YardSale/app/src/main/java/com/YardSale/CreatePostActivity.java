@@ -222,7 +222,6 @@ public class CreatePostActivity extends BaseActivity {
                 upload++;
             }
         }
-        mDatabase.child("post-images").child(key).setValue(mImageIndex);
 
         final StorageReference imageRef =
                 mStorage.child("post-images")
@@ -246,6 +245,7 @@ public class CreatePostActivity extends BaseActivity {
                                         price,
                                         zipcode,
                                         downloadPhotoUrl.toString());
+                                mDatabase.child("post-images").child(key).setValue(downloadPhotoUrl.toString());
                                 Toast.makeText(getApplicationContext(),
                                         "Successfully Posted!",
                                         Toast.LENGTH_SHORT).show();
