@@ -21,23 +21,24 @@ public class SendEmailActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_email);
-
+        // Fetch seller's email from datatbase
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String email = user.getEmail();
 
         EditText myTextBox = (EditText) findViewById(R.id.emailName);
         myTextBox.setText(email);
 
+        //
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(getString(R.string.app_name));
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        //mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-
+        // Call function to send email by clicking the button
         Button startBtn = (Button) findViewById(R.id.sendEmail);
         startBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -45,7 +46,7 @@ public class SendEmailActivity extends Activity {
             }
         });
     }
-
+    // Send email to user
     protected void sendEmail() {
         Log.i("Send email", "");
         String[] TO = {""};

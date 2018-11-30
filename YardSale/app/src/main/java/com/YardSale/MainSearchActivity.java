@@ -33,5 +33,11 @@ public class MainSearchActivity extends AppCompatActivity {
         //Add intent
     }
 
+    // On button click, goes to send email acitvity
+    public void goToSendEmail(View v) {
+        Intent myIntent = new Intent(MainSearchActivity.this,
+                SendEmailActivity.class);
+        startActivity(myIntent);
 
+    }
 }
