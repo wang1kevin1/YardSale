@@ -14,16 +14,6 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true" >
 
-    <Button
-        android:id="@+id/MenuPostButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/my_posts"
-        android:textSize="40sp"
-        android:clickable="true"
-        android:onClick="goToPosts" />
-
     <android.support.v7.widget.SearchView
         android:id="@+id/search"
         android:layout_width="match_parent"

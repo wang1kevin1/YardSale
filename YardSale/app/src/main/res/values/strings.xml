@@ -37,7 +37,7 @@
     <!-- Account Settings Resources -->
     <string name="prompt_update_settings">Update Settings</string>
     <string name="account_settings">Account Settings</string>
-    <string name="title_activity_navigation">Navigation</string>
+    <string name="title_activity_navigation">YardSale</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
