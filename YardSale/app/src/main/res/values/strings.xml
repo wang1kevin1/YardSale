@@ -15,7 +15,7 @@
     <string name="postcreate">CREATE</string>
 
     <!-- My Posts String Resources -->
-    <string name="my_posts_title">My Posts (debug button)</string>
+    <string name="my_posts_title">My Posts</string>
 
     <!-- Login/Create Account Activity -->
     <string name="login">Sign In</string>

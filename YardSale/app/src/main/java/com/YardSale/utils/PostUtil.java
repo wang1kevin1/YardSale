@@ -20,13 +20,12 @@ public class PostUtil {
         String uid = database.child("posts").child(postID).child("uid").getKey();
         String title = database.child("posts").child(postID).child("title").getKey();
         String description = database.child("posts").child(postID).child("description").getKey();
-        String url = database.child("posts").child(postID).child("url").getKey();
 
         // Must be non null strings to convert to int
         String sPrice = (database.child("posts").child(postID).child("price").getKey());
         String sPostalCode = (database.child("posts").child(postID).child("zipcode").getKey());
 
-        String price = "-1", postalCode = "-1";
+        String price = "-1", postalCode = "-1", url = "";
 
         if(sPrice != null) {
             price = sPrice;
@@ -38,7 +37,7 @@ public class PostUtil {
             throw new PostReadException(postID + " is not a valid post ID");
         }
 
-        return new Post(uid, title, description, price, postalCode);
+        return new Post(uid, title, description, price, postalCode, url);
     }
 
 }
