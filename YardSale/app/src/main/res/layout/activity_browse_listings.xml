@@ -23,5 +23,9 @@
         android:layout_height="64dp"
         android:layout_gravity="center_horizontal" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/vertical_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

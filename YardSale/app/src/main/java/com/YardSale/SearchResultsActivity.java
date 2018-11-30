@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.YardSale.adapters.MyPostRecyclerAdapter;
 import com.YardSale.models.Post;
 import com.YardSale.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,10 +24,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 
 
 public class SearchResultsActivity extends Activity {
     TextView tSResult = (TextView) findViewById(R.id.text_view_id);
+    ArrayList<Post> mPostData;
+    MyPostRecyclerAdapter cardAdapter;
+    RecyclerView postRecyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,8 +68,10 @@ public class SearchResultsActivity extends Activity {
             });*/
 
         // If user enters query into search bar
+        System.out.println("\n1\n");
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+            System.out.println(query);
             DatabaseReference mDatabase;
             //get reference to posts in database
             mDatabase = FirebaseDatabase.getInstance().getReference("posts");
@@ -75,14 +84,22 @@ public class SearchResultsActivity extends Activity {
                 @Override
                 //Iterate through data snapshot that match query
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    mPostData = new ArrayList<>();
                     if(dataSnapshot.getChildrenCount() > 0){
                         System.out.println("count : "+ dataSnapshot.getChildrenCount());
                         for(DataSnapshot child : dataSnapshot.getChildren()){
-                            String value = child.getValue(String.class);
+                            Post post = child.getValue(Post.class);
+                            mPostData.add(post);
                             //Display result in textView (temporary)
-                            tSResult.setText(value);
+                            //tSResult.setText(post);
                         }
                     }
+                    cardAdapter = new MyPostRecyclerAdapter(mPostData, getApplication());
+
+                    LinearLayoutManager layoutmanager = new LinearLayoutManager(SearchResultsActivity.this,
+                            LinearLayoutManager.VERTICAL, false);
+                    postRecyclerView.setLayoutManager(layoutmanager);
+                    postRecyclerView.setAdapter(cardAdapter);
 
                 }
 
