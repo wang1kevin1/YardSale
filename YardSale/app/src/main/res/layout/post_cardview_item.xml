@@ -25,13 +25,15 @@
             android:textColor="@android:color/white"
             android:textSize="18dp" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/cardImage"
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:layout_below="@id/txtTitle"
             android:layout_marginLeft="4dp"
             android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@android:color/white"
             android:src="@drawable/ic_attach_image_24dp" />
 
         <LinearLayout

@@ -1,12 +1,14 @@
 package com.YardSale.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.YardSale.R;
@@ -34,7 +36,7 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
 
     public class PostCardViewHolder extends RecyclerView.ViewHolder {
         TextView vTitle;
-        ImageView vImage;
+        ImageButton vImage;
         TextView vPrice;
         TextView vLocation;
         TextView vDescription;
@@ -43,7 +45,7 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
         public PostCardViewHolder(View view) {
             super(view);
             vTitle = (TextView) view.findViewById(R.id.txtTitle);
-            vImage =  (ImageView) view.findViewById(R.id.cardImage);
+            vImage =  (ImageButton) view.findViewById(R.id.cardImage);
             vPrice = (TextView)  view.findViewById(R.id.txtPrice);
             vLocation = (TextView)  view.findViewById(R.id.txtLocation);
             vDescription = (TextView) view.findViewById(R.id.txtDescription);
@@ -64,11 +66,21 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
         Post mypost = postList.get(position);
         final String postkey = mypost.getPOSTKEY();
         final String myUID = AccountUtil.getCurrentUser().getUid();
+        final String url = mypost.getURL();
         holder.vTitle.setText(mypost.getTITLE());
         holder.vPrice.setText(mypost.getPRICE());
         holder.vLocation.setText(mypost.getZIPCODE());
         holder.vDescription.setText(mypost.getDESCRIPTION());
         Glide.with(context).load(mypost.getURL()).into(holder.vImage);
+        holder.vImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(url), "image/*");
+                context.startActivity(intent);
+            }
+        });
         holder.vDeletePost.setText("Delete Post");
         holder.vDeletePost.setOnClickListener(new View.OnClickListener() {
             @Override

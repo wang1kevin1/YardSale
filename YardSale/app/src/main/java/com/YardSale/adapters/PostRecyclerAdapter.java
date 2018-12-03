@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.YardSale.R;
@@ -36,7 +36,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
 
     public class PostCardViewHolder extends RecyclerView.ViewHolder {
         TextView vTitle;
-        ImageView vImage;
+        ImageButton vImage;
         TextView vPrice;
         TextView vLocation;
         TextView vDescription;
@@ -45,7 +45,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
         public PostCardViewHolder(View view) {
             super(view);
             vTitle = (TextView) view.findViewById(R.id.txtTitle);
-            vImage =  (ImageView) view.findViewById(R.id.cardImage);
+            vImage =  (ImageButton) view.findViewById(R.id.cardImage);
             vPrice = (TextView)  view.findViewById(R.id.txtPrice);
             vLocation = (TextView)  view.findViewById(R.id.txtLocation);
             vDescription = (TextView) view.findViewById(R.id.txtDescription);
@@ -66,11 +66,22 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
         Post mypost = postList.get(position);
         final String title = mypost.getTITLE();
         final String uid = mypost.getUID();
+        final String url = mypost.getURL();
         holder.vTitle.setText(mypost.getTITLE());
         holder.vPrice.setText(mypost.getPRICE());
         holder.vLocation.setText(mypost.getZIPCODE());
         holder.vDescription.setText(mypost.getDESCRIPTION());
         Glide.with(context).load(mypost.getURL()).into(holder.vImage);
+        holder.vImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(url), "image/*");
+                context.startActivity(intent);
+            }
+        });
+
         holder.vContactSeller.setText("Email Seller");
         holder.vContactSeller.setOnClickListener(new View.OnClickListener() {
             @Override
