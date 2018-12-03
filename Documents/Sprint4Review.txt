@@ -1,0 +1,24 @@
+SPRINT 4 REVIEW
+
+Team Name: YardSale Team
+Product Name: YardSale
+Date: 12/02/2018
+
+Actions to Stop Doing:
+- The team should stop hoarding code
+- The team should stop notifying people last minute of inability to make it to meetings
+
+Actions to Start Doing:
+- The team should meet up in person more often to work on code together
+
+Actions to Keep Doing:
+- The team should keep staying on top of communication
+
+Work Completed/Not Completed
+Sprint 4:
+
+-As a user, I want to be able to see local posts (Completed)
+-As a user, I want to be able to show interest in a listing (Completed)
+-As a user, I want a widget to navigate between searching, posting, and account settings (Completed)
+-As a user, I want to be able to see my account details (Completed)
+-As a user, I want to be able to view my own posts (Completed)
