@@ -11,9 +11,12 @@ import android.widget.TextView;
 
 import com.YardSale.R;
 import com.YardSale.models.Post;
+import com.YardSale.utils.AccountUtil;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -22,6 +25,7 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
     private ArrayList<Post> postList;
     Context context;
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    StorageReference mStorage = FirebaseStorage.getInstance().getReference();
 
     public MyPostRecyclerAdapter(ArrayList<Post> postList, Context context) {
         this.postList = postList;
@@ -58,8 +62,8 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
     @Override
     public void onBindViewHolder(PostCardViewHolder holder, final int position) {
         Post mypost = postList.get(position);
-        final String title = mypost.getTITLE();
-        final String uid = mypost.getUID();
+        final String postkey = mypost.getPOSTKEY();
+        final String myUID = AccountUtil.getCurrentUser().getUid();
         holder.vTitle.setText(mypost.getTITLE());
         holder.vPrice.setText(mypost.getPRICE());
         holder.vLocation.setText(mypost.getZIPCODE());
@@ -69,7 +73,11 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
         holder.vDeletePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //delete post
+               mDatabase.child("post-images").child(postkey).removeValue();
+               mDatabase.child("posts").child(postkey).removeValue();
+               mDatabase.child("user-posts").child(myUID).child(postkey).removeValue();
+               mStorage.child("post-images").child(postkey).delete();
+               postList.remove(position);
             }
         });
     }

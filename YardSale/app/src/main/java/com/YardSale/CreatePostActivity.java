@@ -244,7 +244,8 @@ public class CreatePostActivity extends BaseActivity {
                                         description,
                                         price,
                                         zipcode,
-                                        downloadPhotoUrl.toString());
+                                        downloadPhotoUrl.toString(),
+                                        key);
                                 mDatabase.child("post-images").child(key).setValue(downloadPhotoUrl.toString());
                                 Toast.makeText(getApplicationContext(),
                                         "Successfully Posted!",
@@ -270,10 +271,10 @@ public class CreatePostActivity extends BaseActivity {
 
     // Stores new post into Firebase Database
     private void storePost(String userId, String title, String description,
-                           String price, String zipcode, String url) {
+                           String price, String zipcode, String url, String postkey) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
-        Post post = new Post(userId, title, description, price, zipcode, url);
+        Post post = new Post(userId, title, description, price, zipcode, url, postkey);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
