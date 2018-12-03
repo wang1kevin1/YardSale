@@ -10,7 +10,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 
 import com.YardSale.adapters.PostRecyclerAdapter;
 import com.YardSale.models.Post;
+import com.YardSale.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +46,7 @@ public class Navigation extends BaseActivity
     StorageReference mStorage;
     DatabaseReference mDatabase;
     String userId;
+    String userZipcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +54,6 @@ public class Navigation extends BaseActivity
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -79,30 +74,104 @@ public class Navigation extends BaseActivity
         //Recycler view cardview list
         postRecyclerView = (RecyclerView) findViewById(R.id.vertical_recycler_view);
 
-        mDatabase.child("posts").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mPostData = new ArrayList<>();
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                    Post aPost = postSnapshot.getValue(Post.class);
-                    mPostData.add(aPost);
+                User user = dataSnapshot.getValue(User.class);
+                userZipcode = user.getZIPCODE();
 
-                    String postKey = postSnapshot.getKey();
+                mDatabase.child("zipcode-posts").child(userZipcode)
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                mPostData = new ArrayList<>();
+                                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                                    Post aPost = postSnapshot.getValue(Post.class);
+                                    mPostData.add(aPost);
+                                }
+                                cardAdapter = new PostRecyclerAdapter(mPostData, getApplication());
 
-                    Log.v("myPost", "post image:" +
-                            mStorage.child("post-images").child(postKey));
-                }
-                cardAdapter = new PostRecyclerAdapter(mPostData, getApplication());
+                                LinearLayoutManager layoutmanager = new LinearLayoutManager(Navigation.this,
+                                        LinearLayoutManager.VERTICAL, false);
+                                postRecyclerView.setLayoutManager(layoutmanager);
+                                postRecyclerView.setAdapter(cardAdapter);
+                            }
 
-                LinearLayoutManager layoutmanager = new LinearLayoutManager(Navigation.this,
-                        LinearLayoutManager.VERTICAL, false);
-                postRecyclerView.setLayoutManager(layoutmanager);
-                postRecyclerView.setAdapter(cardAdapter);
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.v("read error", databaseError.getMessage());
+                            }
+                        });
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.v("read error", databaseError.getMessage());
+            }
+        });
+
+        SearchView searchView = (SearchView) findViewById(R.id.search);
+
+        // perform set on query text listener event
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                search(query);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (TextUtils.isEmpty(newText)) {
+                    search("");
+                }
+
+                return false;
+            }
+
+            public void search(String query) {
+
+                final String keyword = query;
+
+                mDatabase.child("users").child(userId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        userZipcode = user.getZIPCODE();
+
+                        mDatabase.child("zipcode-posts").child(userZipcode)
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        mPostData = new ArrayList<>();
+                                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                                            Post aPost = postSnapshot.getValue(Post.class);
+
+                                            if (aPost.getTITLE().contains(keyword) ||
+                                                    aPost.getDESCRIPTION().contains(keyword)) {
+                                                mPostData.add(aPost);
+                                            }
+                                        }
+
+                                        cardAdapter = new PostRecyclerAdapter(mPostData, getApplication());
+
+                                        LinearLayoutManager layoutmanager = new LinearLayoutManager(Navigation.this,
+                                                LinearLayoutManager.VERTICAL, false);
+                                        postRecyclerView.setLayoutManager(layoutmanager);
+                                        postRecyclerView.setAdapter(cardAdapter);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.v("read error", databaseError.getMessage());
+                                    }
+                                });
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.v("read error", databaseError.getMessage());
+                    }
+                });
             }
         });
     }
@@ -132,7 +201,7 @@ public class Navigation extends BaseActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.keyword_search) {
             return true;
         }
 

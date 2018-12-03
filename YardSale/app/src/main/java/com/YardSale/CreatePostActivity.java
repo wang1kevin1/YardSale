@@ -280,6 +280,7 @@ public class CreatePostActivity extends BaseActivity {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/posts/" + key, postValues);
         childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+        childUpdates.put("/zipcode-posts/" + zipcode + "/" + key, postValues);
 
         mDatabase.updateChildren(childUpdates);
     }
