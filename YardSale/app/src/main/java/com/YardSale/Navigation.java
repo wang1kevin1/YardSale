@@ -140,7 +140,7 @@ public class Navigation extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        /* if (id == R.id.nav_camera) {
+        /*if (id == R.id.nav_camera) {
             Intent intent = new Intent(Navigation.this, MainSearchActivity.class);
             startActivity(intent);
         } else*/ if (id == R.id.nav_gallery) {

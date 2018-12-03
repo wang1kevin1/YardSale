@@ -47,6 +47,7 @@
         <!-- Search Listings Activity -->
         <activity
             android:name=".SearchResultsActivity"
+            android:launchMode="singleTop">
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/search_title"
             android:parentActivityName=".MainSearchActivity"
