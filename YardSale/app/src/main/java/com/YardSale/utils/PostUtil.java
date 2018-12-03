@@ -6,6 +6,8 @@ import com.google.firebase.database.DatabaseReference;
 
 public class PostUtil {
 
+    public static String POSTS = "posts";
+    public static String USER_POSTS = "user-posts";
 
     /**
      *
