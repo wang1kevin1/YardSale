@@ -82,7 +82,11 @@
             android:name=".Navigation"
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AccountSettingsActivity"></activity>
+        <activity
+            android:name=".AccountSettingsActivity"
+            android:label="Account Settings"
+            android:parentActivityName=".Navigation">
+        </activity>
     </application>
 
 </manifest>
