@@ -203,6 +203,11 @@ public class CreatePostActivity extends BaseActivity {
             mPostDesc.setError(REQUIRED);
             return;
         }
+        // Image is required
+        if (mArrayUri == null) {
+            Toast.makeText(this, "Image Required", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         // Disable button so there are no multi-posts
         setEditingEnabled(false);
