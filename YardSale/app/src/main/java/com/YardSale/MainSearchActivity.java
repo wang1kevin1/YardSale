@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.YardSale.adapters.MyPostRecyclerAdapter;
+import com.YardSale.adapters.PostRecyclerAdapter;
 import com.YardSale.models.Post;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class MainSearchActivity extends BaseActivity {
 
     //Cardview displays
-    MyPostRecyclerAdapter cardAdapter;
+    PostRecyclerAdapter cardAdapter;
     RecyclerView postRecyclerView;
     ArrayList<Post> mPostData;
     ArrayList<Uri> mArrayUri;
@@ -59,7 +59,7 @@ public class MainSearchActivity extends BaseActivity {
                     Log.v("myPost", "post image:" +
                             mStorage.child("post-images").child(postKey));
                 }
-                cardAdapter = new MyPostRecyclerAdapter(mPostData, getApplication());
+                cardAdapter = new PostRecyclerAdapter(mPostData, getApplication());
 
                 LinearLayoutManager layoutmanager = new LinearLayoutManager(MainSearchActivity.this,
                         LinearLayoutManager.VERTICAL, false);

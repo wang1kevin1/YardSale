@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.YardSale.adapters.MyPostRecyclerAdapter;
+import com.YardSale.adapters.PostRecyclerAdapter;
 import com.YardSale.models.Post;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,7 +35,7 @@ public class Navigation extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     //Cardview displays
-    MyPostRecyclerAdapter cardAdapter;
+    PostRecyclerAdapter cardAdapter;
     RecyclerView postRecyclerView;
     ArrayList<Post> mPostData;
     ArrayList<Uri> mArrayUri;
@@ -92,7 +92,7 @@ public class Navigation extends BaseActivity
                     Log.v("myPost", "post image:" +
                             mStorage.child("post-images").child(postKey));
                 }
-                cardAdapter = new MyPostRecyclerAdapter(mPostData, getApplication());
+                cardAdapter = new PostRecyclerAdapter(mPostData, getApplication());
 
                 LinearLayoutManager layoutmanager = new LinearLayoutManager(Navigation.this,
                         LinearLayoutManager.VERTICAL, false);
