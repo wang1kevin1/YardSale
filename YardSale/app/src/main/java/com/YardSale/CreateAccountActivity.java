@@ -68,6 +68,8 @@ public class CreateAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                mCreateAccountButton.setEnabled(false);
+
                 //Set errors to null
                 mPasswordEditText.setError(null);
                 mEmailEditText.setError(null);
@@ -79,6 +81,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                     mPasswordEditText.setError("Passwords do not match");
                     mConfirmPasswordEditText.setError("Passwords do not match");
                 }
+
+                mCreateAccountButton.setEnabled(true);
 
             }
         });

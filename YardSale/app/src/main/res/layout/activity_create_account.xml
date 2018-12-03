@@ -68,8 +68,9 @@
             <EditText android:id="@+id/editTextPostalCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="Postal Code" />
+                android:inputType="number"
+                android:hint="Zipcode"
+                android:maxLength="5" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
