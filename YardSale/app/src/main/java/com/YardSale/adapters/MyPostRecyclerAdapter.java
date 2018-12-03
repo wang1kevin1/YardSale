@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.YardSale.R;
 import com.YardSale.models.Post;
@@ -67,6 +68,7 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
         final String postkey = mypost.getPOSTKEY();
         final String myUID = AccountUtil.getCurrentUser().getUid();
         final String url = mypost.getURL();
+        final String zipcode = mypost.getZIPCODE();
         holder.vTitle.setText(mypost.getTITLE());
         holder.vPrice.setText(mypost.getPRICE());
         holder.vLocation.setText(mypost.getZIPCODE());
@@ -84,12 +86,21 @@ public class MyPostRecyclerAdapter extends RecyclerView.Adapter<MyPostRecyclerAd
         holder.vDeletePost.setText("Delete Post");
         holder.vDeletePost.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Hold to Delete", Toast.LENGTH_LONG).show();
+            }
+        });
+        holder.vDeletePost.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
                mDatabase.child("post-images").child(postkey).removeValue();
                mDatabase.child("posts").child(postkey).removeValue();
                mDatabase.child("user-posts").child(myUID).child(postkey).removeValue();
+               mDatabase.child("zipcode-posts").child(zipcode).child(postkey).removeValue();
                mStorage.child("post-images").child(postkey).delete();
                postList.remove(position);
+
+               return true;
             }
         });
     }

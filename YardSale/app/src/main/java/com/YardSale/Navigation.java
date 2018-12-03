@@ -131,7 +131,7 @@ public class Navigation extends BaseActivity
 
             public void search(String query) {
 
-                final String keyword = query;
+                final String keyword = query.toLowerCase();
 
                 mDatabase.child("users").child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -147,8 +147,8 @@ public class Navigation extends BaseActivity
                                         for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                                             Post aPost = postSnapshot.getValue(Post.class);
 
-                                            if (aPost.getTITLE().contains(keyword) ||
-                                                    aPost.getDESCRIPTION().contains(keyword)) {
+                                            if (aPost.getTITLE().toLowerCase().contains(keyword) ||
+                                                    aPost.getDESCRIPTION().toLowerCase().contains(keyword)) {
                                                 mPostData.add(aPost);
                                             }
                                         }

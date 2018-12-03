@@ -2,10 +2,11 @@ package com.YardSale;
 
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -25,14 +26,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CreatePostActivity extends BaseActivity {
 
-    private static final int GALLERY_REQUEST_CODE = 2;
+    private static final int REQUEST_TAKE_PHOTO = 1;
     private static final String REQUIRED = "Required";
     private static final String TAG = "CreatePostActivity";
 
@@ -40,11 +44,10 @@ public class CreatePostActivity extends BaseActivity {
     Button mImageBtn;
     Button mPostBtn;
     //Image selection
-    String imageEncoded;
-    List<String> imagesEncodedList;
     ArrayList<Uri> mArrayUri;
     ArrayList<String> mImageIndex;
     Uri mImageUri;
+    String mCurrentPhotoPath;
 
 
     //Image display
@@ -87,12 +90,24 @@ public class CreatePostActivity extends BaseActivity {
         mImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"),
-                        GALLERY_REQUEST_CODE);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Ensure that there's a camera activity to handle the intent
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        // Error occurred while creating the File...
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        mImageUri = FileProvider.getUriForFile(CreatePostActivity.this,
+                                "com.YardSale.android.fileprovider",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                    }
+                }
             }
         });
 
@@ -105,71 +120,38 @@ public class CreatePostActivity extends BaseActivity {
         });
     }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
     // Select images to add to post
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        try{
-            if(requestCode == GALLERY_REQUEST_CODE &&
-                    resultCode == RESULT_OK &&
-                    data != null ) {
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                imagesEncodedList = new ArrayList<>();
-                mArrayUri = new ArrayList<>();
-                mArrayUri.clear();
+        if(requestCode == REQUEST_TAKE_PHOTO &&
+                resultCode == RESULT_OK) {
+            mArrayUri = new ArrayList<>();
+            mArrayUri.add(mImageUri);
+            // fill in recycler view with images
+            imageAdapter = new CreatePostRecyclerAdapter(mArrayUri, getApplication());
 
-                if (data.getData() != null) { //on Single image selected
-                    mImageUri = data.getData();
-                    // Get the cursor
-                    Cursor cursor = getContentResolver().query(mImageUri, filePathColumn, null, null, null);
-                    // Move to first row
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    imageEncoded = cursor.getString(columnIndex);
-                    cursor.close();
-
-                    mArrayUri.add(mImageUri);
-                    Log.v("CreatePostActivity", "Selected Images: 1");
-                } else { //on Multiple image selected
-                    /* if(data.getClipData() != null) {
-                        ClipData mClipData = data.getClipData();
-
-                        for (int i = 0; i < mClipData.getItemCount(); i++) {
-
-                            ClipData.Item item = mClipData.getItemAt(i);
-                            Uri uri = item.getUri();
-                            mArrayUri.add(uri);
-                            // Get the cursor
-                            Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
-                            // Move to first row
-                            cursor.moveToFirst();
-
-                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                            imageEncoded = cursor.getString(columnIndex);
-                            imagesEncodedList.add(imageEncoded);
-                            cursor.close();
-
-                        }
-                        Log.v("CreatePostActivity", "Selected Images " + mArrayUri.size());
-
-                    } */
-                    Toast.makeText(this, "Choose 1 image", Toast.LENGTH_LONG).show();
-                }
-                // fill in recycler view with images
-                imageAdapter = new CreatePostRecyclerAdapter(mArrayUri, getApplication());
-
-                LinearLayoutManager hLayoutManager =
-                        new LinearLayoutManager(CreatePostActivity.this,
-                                LinearLayoutManager.HORIZONTAL, false);
-                imageRecyclerView.setLayoutManager(hLayoutManager);
-                imageRecyclerView.setAdapter(imageAdapter);
-            } else {
-                Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            LinearLayoutManager hLayoutManager =
+                    new LinearLayoutManager(CreatePostActivity.this,
+                            LinearLayoutManager.HORIZONTAL, false);
+            imageRecyclerView.setLayoutManager(hLayoutManager);
+            imageRecyclerView.setAdapter(imageAdapter);
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -178,7 +160,7 @@ public class CreatePostActivity extends BaseActivity {
         final String title = mPostTitle.getText().toString().trim();
         final String price = mPostPrice.getText().toString();
         final String zipcode = mPostZipcode.getText().toString();
-        final String description = mPostDesc.getText().toString();
+        final String description = mPostDesc.getText().toString().trim();
 
         final String userId = getUid();
 
