@@ -68,21 +68,19 @@ public class CreateAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                mCreateAccountButton.setEnabled(false);
-
                 //Set errors to null
                 mPasswordEditText.setError(null);
                 mEmailEditText.setError(null);
 
-                if(mPasswordEditText.getText().toString().equals(mConfirmPasswordEditText.getText().toString()))
+                if(mPasswordEditText.getText().toString().equals(mConfirmPasswordEditText.getText().toString())) {
+                    mCreateAccountButton.setEnabled(false);
                     createAccount(mEmailEditText.getText().toString().trim(), mPasswordEditText.getText().toString(), mPostalCodeEditText.getText().toString().trim());
-
-                else {
+                } else {
                     mPasswordEditText.setError("Passwords do not match");
                     mConfirmPasswordEditText.setError("Passwords do not match");
                 }
 
-                mCreateAccountButton.setEnabled(true);
+
 
             }
         });
@@ -115,6 +113,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                                 AccountUtil.writeUser(user.getUid(), user.getEmail(), zipcode);
                                 Intent myIntent = new Intent(CreateAccountActivity.this,
                                         Navigation.class);
+                                mCreateAccountButton.setEnabled(true);
                                 startActivity(myIntent);
                             } else {
                                 // If sign in fails, display a message to the user.
