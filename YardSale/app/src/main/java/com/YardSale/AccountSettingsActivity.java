@@ -13,13 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.YardSale.models.User;
 import com.YardSale.utils.AccountUtil;
 import com.YardSale.utils.PostUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -83,7 +81,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         });
 
         mEmailEditText.setText(AccountUtil.getCurrentUser().getEmail());
-        mPasswordEditText.setText("*************");
 
         // Buttons
         mUpdateSettings = findViewById(R.id.buttonUpdateSettings);
@@ -91,7 +88,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         mUpdateSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Set errors to null
                 mPasswordEditText.setError(null);
                 mEmailEditText.setError(null);
@@ -100,6 +96,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
                     mEmailEditText.setError("Enter a valid email");
 
                 if(AccountUtil.isValidPostalCode(mPostalCodeEditText.getText().toString().trim(), mPostalCodeEditText) && AccountUtil.isPasswordValid(mPasswordEditText.getText().toString().trim(),mPasswordEditText))
+                    mUpdateSettings.setEnabled(false);
                     updateUserSettings(mEmailEditText.getText().toString().trim(), mPasswordEditText.getText().toString(), mPostalCodeEditText.getText().toString().trim());
 
             }
@@ -183,6 +180,11 @@ public class AccountSettingsActivity extends AppCompatActivity {
         });
 
         AccountUtil.writeUser(user.getUid(), email, postalCode);
+
+        Intent myIntent = new Intent(AccountSettingsActivity.this,
+                Navigation.class);
+        mUpdateSettings.setEnabled(true);
+        startActivity(myIntent);
     }
 
     private void deleteAccount(){

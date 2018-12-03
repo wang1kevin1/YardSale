@@ -111,6 +111,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                                 Log.d(TAG, "createUserWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 AccountUtil.writeUser(user.getUid(), user.getEmail(), zipcode);
+
                                 Intent myIntent = new Intent(CreateAccountActivity.this,
                                         Navigation.class);
                                 mCreateAccountButton.setEnabled(true);
