@@ -18,6 +18,10 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/baseline_account_circle_black_18dp"
             android:title="Account Settings" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/log_out"
+            android:title="Log Out" />
     </group>
 
 </menu>

@@ -154,6 +154,9 @@ public class Navigation extends BaseActivity
         }  else if (id == R.id.nav_manage) {
             Intent intent2 = new Intent(Navigation.this,AccountSettingsActivity.class);
             startActivity(intent2);
+        }   else if (id == R.id.nav_logout) {
+            Intent intent3 = new Intent(Navigation.this,LoginActivity.class);
+            startActivity(intent3);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
