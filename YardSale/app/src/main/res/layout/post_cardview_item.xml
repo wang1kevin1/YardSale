@@ -98,9 +98,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtDescription"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@id/cardImage"
-            android:text="Fill" />
+            android:text="Fill"
+            android:textSize="15dp"/>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
