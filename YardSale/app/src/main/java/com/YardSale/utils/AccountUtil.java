@@ -125,12 +125,12 @@ public class AccountUtil {
      *
      * @param email new user email
      * @param password new user password
-     * @param postalCode new user postalCode
+     * @param zipcode new user postalCode
      */
-    public static void updateUserSettings(String email, String password, String postalCode){
+    public static void updateUserSettings(String email, String password, String zipcode){
         FirebaseUser firebaseUser = getCurrentUser();
         firebaseUser.reauthenticate(EmailAuthProvider.getCredential(email, password));
-        writeUser(firebaseUser.getUid(), email, Integer.parseInt(postalCode));
+        writeUser(firebaseUser.getUid(), email, zipcode);
     }
 
     /**
@@ -138,10 +138,10 @@ public class AccountUtil {
      *
      * @param userId ID for the user
      * @param email Email for the user
-     * @param postalCode postalCode for the user
+     * @param zipcode Zipcode for the user
      */
-    public static void writeUser(String userId, String email, int postalCode) {
-        User user = new User(email, postalCode);
+    public static void writeUser(String userId, String email, String zipcode) {
+        User user = new User(email, zipcode);
         getDatabaseReference().child("users").child(userId).setValue(user);
     }
 }

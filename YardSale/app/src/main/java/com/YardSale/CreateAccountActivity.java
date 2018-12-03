@@ -88,7 +88,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     private void createAccount(String email, String password, String postalCode){
-        final int zipcode = Integer.parseInt(postalCode);
+        final String zipcode = postalCode;
 
         if(email.isEmpty())
             mEmailEditText.setError("Email field is required.");

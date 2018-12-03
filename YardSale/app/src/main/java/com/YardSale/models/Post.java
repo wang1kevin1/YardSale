@@ -20,12 +20,12 @@ public class Post {
     }
 
     public Post(String uid, String title, String description,
-                String price, String postalCode, String url) {
+                String price, String zipcode, String url) {
         this.UID = uid;
         this.TITLE = title;
         this.DESCRIPTION = description;
         this.PRICE = price;
-        this.ZIPCODE = postalCode;
+        this.ZIPCODE = zipcode;
         this.URL = url;
     }
 
