@@ -13,3 +13,9 @@ Download YardSale_Release.apk onto an Android device running API 26 or newer (An
 
 Note that this app is unsigned so you will have to give it permission to install. This can be accomplished by going to: 
 `Settings/Security & privacy/More/Install unknown apps/Chrome` and turning on `Allow app installs`. Once the app has been installed, feel free to turn it back off.
+
+## Sell your unused items!
+<img src="Documents/YardSale_CreatePost_Screenshot.png" height="600" width="300"/>
+
+## Find local deals!
+<img src="Documents/YardSale_Search_Screenshot.PNG" height="600" width="300"/>
