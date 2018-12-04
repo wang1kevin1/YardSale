@@ -1,0 +1,60 @@
+----------------------------------------------------------------------------------------------------
+                                            UNIT TESTING                                            
+----------------------------------------------------------------------------------------------------
+
+Product: YardSale
+Member: Kevin Wang
+Date: 12/3/2018
+
+########################################## UNIT FUNCTIONS ##########################################
+
+CREATE ACCOUNT:
+  PASS - already used email should fail authentication. (kwang43@ucsc.edu)
+  PASS - email not matching regex pattern of an email brings up error. (wang1kevin1gmail.com)
+  PASS - password mismatch should return error. (Test1! , Test2!)
+  PASS - password not matching regex should bring up error. (test1!, Test1, TEST1!, Test!, test1!)
+  FAIL - zipcode must have 5 integers or brings up error. (9506)
+  PASS - correct fields creates new account. (kwang43@ucsc.edu, Kevin29041!, Kevin29041!, 95060)
+  
+LOG IN:
+  PASS - email & password mismatch results in authentication failure. (kwang43@ucsc.edu, hello)
+  PASS - email & password match results in login. (kwang43@ucsc.edu, Kevin29041!)
+  
+ACCOUNT SETTINGS:
+  FAIL - password not matching regex should bring up error. (test1!, Test1, TEST1!, Test!, test1!)
+  FAIL - zipcode must have 5 integers or brings up error. (9506)
+  PASS - correct changes results in successful update. (kwang43@ucsc.edu, Kevin29041?, 95064)
+
+LOG OUT:
+  PASS - pressing Log Out logs out of user account.
+CREATE POST:
+  PASS - missing post attributes returns an error message.
+  FAIL - zipcode must have 5 integers or brings up error. (9506)
+  
+ADD PICTURE:
+  PASS - picture taken with camera app is displayed in post.
+
+MY POSTS:
+  PASS - created posts fully displayed over Recycler Adapter.
+  
+DELETE POST:
+  PASS - fast press DELETE reveals a tip to long press for deletion.
+  PASS - long press DELETE deletes post.
+  
+SEARCH LOCAL POSTS:
+  PASS - only post objects with zipcode matching user's are added to the list of posts.
+  PASS - searching for nonexistent item gives empty list of posts.
+  PASS - search by keyword works on filters out non-inclusive results.
+  PASS - clearing search removes the filter.
+  PASS - searching is case-insensitive.
+  PASS - search both title and description.
+  FAIL - searching for multiple words refines the filter.
+  
+ENLARGE POST IMAGE
+  PASS - pressing on post image brings it up fullscreen in gallery app.
+  
+EMAIL SELLER
+  FAIL - prevent from emailing self via own posts.
+  PASS - email template uses the correct seller email.
+  PASS - email template uses the correct post title.
+  
