@@ -1,0 +1,219 @@
+----------------------------------------------------------------------------------------------------
+                              Working Prototype: Known Problems Report                              
+----------------------------------------------------------------------------------------------------
+
+Product: YardSale
+Team: YardSale Team
+Date: 12/3/2018
+
+#################################### KNOWN PROBLEMS IN YARDSALE ####################################
+
+CREATE ACCOUNT: button locks after a failed account creation (due to bad email or passwords).
+[CreateAccountActivity.java | line 76] 
+  -> bad placement of 'btn.setEnabled(false)' for preventing double account creation.
+
+  
+CREATE ACCOUNT: bad zipcode (not 5 integers) is still accepted and stored despite warning.
+[AccountUtil.java | line 101] 
+  -> always returning true even if zipcode is not 5 integers.
+
+  
+ACCOUNT SETTINGS: email shouldn't be editable and if changed, results in "Update Failed".
+[AccountSettingsActivity.java | line 151]
+  -> issue with 'private void updateUserSettings(String email, String password, String postalCode)'.
+  
+  
+ACCOUNT SETTINGS: bad zipcode (not 5 integers) is still accepted and updated despite warning.
+[AccountUtil.java | line 101] 
+  -> always returning true even if zipcode is not 5 integers.
+
+  
+ACCOUNT SETTINGS: bad password (no regex match) is still accepted and updated despite warning.
+[AccountSettingsActivity.java | line ?]
+  -> ?
+ 
+ 
+ACCOUNT SETTINGS: empty field forces app to restart, especially password which is left blank.
+[AccountSettingsActivity.java | line 151]
+  -> cannot call 'private void updateUserSettings(String email, String password, String postalCode)'
+     on empty/null String.
+  
+  
+ACCOUNT SETTINGS: changing account zipcode doesn't update already uploaded posts.
+[AccountSettingsActivity.java | line 151]
+  -> 'private void updateUserSettings(String email, String password, String postalCode)' doesn't 
+     include function to edit database posts.
+ 
+ 
+CREATE POST: adding a picture before typing the post description causes input text to be visually 
+             blocked by the keyboard. 
+[activity_create_post.xml | line 2]
+  -> need to add a vertically scrollable layout as parent
+
+  
+CREATE POST: bad zipcode (not 5 integers) is still accepted and uploaded.
+[CreatePostActivity.java | line 178] 
+  -> zipcode not validated, only existance required.
+ 
+ 
+SEARCH: search reads multiple keywords separated by spaces as a single sentence string.
+[Navigation.java | line 134] 
+  -> need to parse query into substrings, and add aPost containing any of the substrings to the list
+     of posts for the interface adapter.
+     
+####################################################################################################
+
+HIGH LEVEL GOALS:
+  I.  Workable user interface
+ II.  Individual user accounts
+III.  Search market for posts
+ IV.  Post items for sale
+
+--------------------------------------SPRINTS 1-4 USER STORIES -------------------------------------
+SUGGESTED
+ACCEPTANCE
+CRITERIA
+----------
+          @.  As a user, I want to be able to download and install the YardSale app so I can use it.
+
+ II --->  A.  As a user, I want to CREATE an ACCOUNT so that I can use the YardSale app.
+
+ II --->  B.  As a user, I want to be able to LOGIN to my existing account so that I can use the 
+              YardSale app with all my personal data.
+
+          C.  As a user, I want to be able to change my ACCOUNT SETTINGS so that I can keep my 
+              account if any of my information changes.
+
+          D.  As a user, I want to be able to LOGOUT of my account when I’m finished for security.
+              
+ IV --->  E.  As a user, I want to be able to CREATE a POST so that I can sell my item.
+
+ IV --->  F.  As a user, I want to be able to take a PICTURE and add it to my post to attract more 
+              potential buyers.
+              
+          G.  As a user, I want to be able to see MY own POSTS for reference.
+
+          H.  As a user, I want to be able to DELETE MY POSTS if I made a mistake, sold the item, 
+              or no longer wish to sell the item.
+              
+III --->  I.  As a user, I want to be able to SEARCH through local posts so I can find specific 
+              items I’m interested in.
+           
+          J.  As a user, I want to be able to see a PICTURE of what someone is selling so I know 
+              what I'm buying.
+              
+ II --->  K.  As a user, I want to be able to CONTACT a SELLER so that I can purchase the item.
+
+----------------------------------------- SYSTEM DEMO TEST -----------------------------------------
+USER
+STORY
+-----     
+      - start YardSale app
+    @ * User should see the app open and be greeted with the login page.
+      - select text: "No account yet? Create one" 
+      - type {
+          Email            = <kwang43@ucsc.edu>
+          Password         = <Kevin29041!>
+          Confirm Password = <Kevin29041!>
+          Zipcode          = <95060> }
+      - press "CREATE ACCOUNT" button
+    A * User should be automatically logged in and see the main search page.
+      - restart YardSale app
+      - start YardSale app
+      - type {
+          Email    = <kwang43@ucsc.edu>
+          Password = <Kevin29041!> }
+      - press "LOGIN" button
+    B * User should be logged in and see the main search page. 
+      - press Collapse Menu Button (top right)
+      - press "Account Settings"
+    C * User should see the account settings page along with their current Email and Postal Code.
+      - type {
+          Password = <Kevin29041?> 
+          Zipcode  = <95064> }
+    C * User should see verification message that settings are updated.
+      - press Collapse Menu Button (top right)
+      - press "Account Settings"
+    C * User should see their new Postal Code.
+      - restart YardSale app
+      - type {
+          Email    = <kwang43@ucsc.edu>
+          Password = <Kevin29041?> }
+    C * User should be logged in with new credentials and see the main search page.
+      - press Collapse Menu Button (top right)
+      - press "Log Out" 
+    D * User should be logged out and see the login page.
+      - login to YardSale app
+      - press Collapse Menu Button (top right)\
+      - press "My Posts"
+      * User should see an empty My Posts page.
+      - press the circular plus-sign button (bottom right) on the My Posts Page
+    E * User should see a form/template for creating a post.
+      - type {
+          Title       = <TEST TITLE> 
+          $           = <100>
+          Zipcode     = <95064> 
+          Description = <This is a post description.> } 
+      - press "ADD PICTURE" button
+  F E * User should be brought to their camera app.
+      - take a picture of your item for sale
+      - confirm your picture choice
+  F E * User should brought back to their filled out form and see the picture above the description.
+      - press "CREATE" button
+  F E * User should see verification message that their item was successfully posted.
+G F E * User should be brought back to the My Posts page and see their newly created post.
+      - create another post with a random picture {
+          Title       = <USED LAPTOP> 
+          $           = <100>
+          Zipcode     = <95064> 
+          Description = <Tested it and it works great! Laptop is a Toshiba though.> }
+      * User should be brought back to the My Posts page and see 2 different post.
+      - create another post with a random picture {
+          Title       = <DELETE ME!> 
+          $           = <999999>
+          Zipcode     = <95064> 
+          Description = <Let's try deleting one of my posts.> }
+      * User should be brought back to the My Posts page and see 3 different post.
+      - long press the "DELETE POST" button on the post titled "DELETE ME!"
+    H * User should see the post in question dissappear with only 2 posts remaining.
+      - press the back arrow button (top right)
+  F E * User should see their two posts on the main search page.
+      - restart YardSale app (new User)
+      - create a new account {
+          Email            = <wang1kevin1@gmail.com>
+          Password         = <Kevin29041?>
+          Confirm Password = <Kevin29041?>
+          Zipcode          = <95064> }
+  F E * User should be automatically logged in and see the main search page with 2 items for sale.
+      - press "Search" in the search bar
+      - type {
+          search = <broken> }
+      - press search button on keyboard (return key)
+    I * User should see 0 posts (no post contains "broken").
+      - press the X button in the search bar
+    I * User should see 2 posts again.
+      - type {
+          search = <test> }
+      - press search button on keyboard (return key)
+    I * User should see no change (both posts include "test" in their Title/Description).
+      - press the X button in the search bar
+      - type {
+          search = <laptop> }
+      - press search button on keyboard (return key)
+    I * User should see only 1 post that contains the term "laptop" (case-insensitive).
+      - press on the post's picture
+    J * User should be brought to their gallery app and see the image fullscreen.
+      - press the return button
+      - press "EMAIL SELLER" button on the post
+    K * User should be brought to their email app and see a pre-filled email draft {
+          From          = <wang1kevin1@gmail.com>
+          To            = <kwang43@ucsc.edu>
+          Subject       = <Interested in your YardSale Post>
+          Compose email = <I'm interested in your listing for: \n "USED LAPTOP".>
+      - type (add to body) {
+          Compose email = <\n I'm free all afternoon Saturday. Please let me know where and when 
+                           you'd like to meet. I'll can bring cash but I prefer Venmo.> }
+      - send the email
+    K * User should be brought back to the main search page.
+    
+----------------------------------------------------------------------------------------------------
