@@ -8,15 +8,15 @@ Date: 12/3/2018
 
 ##################################### SPRINTS 1-4 USER STORIES #####################################
 
-A.	As a user, I want to CREATE an ACCOUNT so that I can use the YardSale app.
+A.  As a user, I want to CREATE an ACCOUNT so that I can use the YardSale app.
 
-B.	As a user, I want to be able to LOGIN to my existing account so that I can use the YardSale app 
+B.  As a user, I want to be able to LOGIN to my existing account so that I can use the YardSale app 
     with all my personal data.
 
-C.	As a user, I want to be able to change my ACCOUNT SETTINGS so that I can keep my account if any 
+C.  As a user, I want to be able to change my ACCOUNT SETTINGS so that I can keep my account if any 
     of my information changes.
 
-D.	As a user, I want to be able to LOGOUT of my account when I’m finished for security.
+D.  As a user, I want to be able to LOGOUT of my account when I’m finished for security.
     
 E.  As a user, I want to be able to CREATE a POST so that I can sell my item.
 
