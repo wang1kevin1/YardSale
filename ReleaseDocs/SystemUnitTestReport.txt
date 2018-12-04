@@ -8,6 +8,8 @@ Date: 12/3/2018
 
 ##################################### SPRINTS 1-4 USER STORIES #####################################
 
+@.  As a user, I want to be able to download and install the YardSale app so I can use it.
+
 A.  As a user, I want to CREATE an ACCOUNT so that I can use the YardSale app.
 
 B.  As a user, I want to be able to LOGIN to my existing account so that I can use the YardSale app 
@@ -44,6 +46,7 @@ USER
 STORY
 ------
       - start YardSale app
+    @ * User should see the app open and be greeted wiht the login page.
       - select text: "No account yet? Create one" 
       - type {
           Email            = <kwang43@ucsc.edu>
